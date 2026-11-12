@@ -44,6 +44,9 @@ import { AdminKitProvider } from "@craazzzyyfoxx/admin-kit/provider";
 <AdminKitProvider describeError={(error) => ({ message, status, requestId })}>{children}</AdminKitProvider>
 ```
 
+**Vitest.** Inline the package (`test.server.deps.inline: ["@craazzzyyfoxx/admin-kit"]`): its ESM
+imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
+
 ## Imports
 
 | Path | Holds |
