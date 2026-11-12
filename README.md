@@ -1,0 +1,101 @@
+# @craazzzyyfoxx/admin-kit
+
+The admin list table, its pagination and the form kit shared by
+[dudeduck](https://github.com/CraazzzyyFoxx/dudeduck) and
+[overwatch-tournaments](https://github.com/CraazzzyyFoxx/overwatch-tournaments): Next.js 16,
+React 19, Tailwind 4, shadcn/ui (`new-york`), next-intl 4.
+
+## Setup
+
+```sh
+npm i @craazzzyyfoxx/admin-kit
+```
+
+Peer dependencies the app already has: `next`, `react`, `react-dom`, `next-intl`,
+`@tanstack/react-query`, `@tanstack/react-table`, `radix-ui`, `lucide-react`, `sonner`.
+
+**Styles.** In `globals.css`, right after Tailwind and before the app's own `@theme`:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@craazzzyyfoxx/admin-kit/styles.css";
+```
+
+It points Tailwind at the kit's files and adds `text-label` / `text-caption` / `text-body`,
+`shadow-surface` and the `--admin-row-tint` property. The app's `@theme` overrides any of them.
+The kit colours only through Tailwind's theme: shadcn's tokens as `--color-*` (`--color-card`,
+`--color-primary`, …) plus `--color-success`, `--color-warning`, `--color-info` and
+`--color-danger`, in whatever colour format the app uses.
+
+**Messages.** The kit's strings sit under `adminKit`; merge them into the app's next-intl messages:
+
+```ts
+import { en, ru } from "@craazzzyyfoxx/admin-kit/messages";
+
+const messages = { ...appMessages[locale], ...{ en, ru }[locale] };
+```
+
+**Provider.** Optional: without it a failed request shows the `Error`'s message.
+
+```tsx
+import { AdminKitProvider } from "@craazzzyyfoxx/admin-kit/provider";
+
+<AdminKitProvider describeError={(error) => ({ message, status, requestId })}>{children}</AdminKitProvider>
+```
+
+## Imports
+
+| Path | Holds |
+| --- | --- |
+| `@craazzzyyfoxx/admin-kit/data-table` | `DataTable`, `columnMeta`, `createKebabColumn`, filters, types (and `/data-table/<file>` for the rest) |
+| `@craazzzyyfoxx/admin-kit/kit/<name>` | `ConfirmDialog`, `EntityFormDialog`, `EmptyNote` (`LoadErrorNote`), `ErrorDetails`, `Clipboard`, `FilterBar`, `useFilters`, `ServerSearchCombobox`, `useSearchComboboxQuery`, `useUnsavedGuard`, `SaveBar` |
+| `@craazzzyyfoxx/admin-kit/ui/<name>` | The shadcn primitives the kit is built from (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies. |
+| `@craazzzyyfoxx/admin-kit/provider` | `AdminKitProvider`, `useDescribeError` |
+| `@craazzzyyfoxx/admin-kit/messages` | `en`, `ru` |
+| `@craazzzyyfoxx/admin-kit/styles.css` | See Setup |
+
+## DataTable
+
+- **Two data modes.** Server (`queryKey`/`queryFn`, one page per request) or client (`rows`,
+  everything in memory: search, sort, filters and paging run locally).
+- **URL is the state.** Page, search, page size, sort and column filters are mirrored into the
+  query string and restored from it; back/forward works.
+- **Auto page size.** A `pages` table without `initialPageSize` fits its page to the viewport.
+- **Paging.** Seven fixed page slots (the arrows never move), a "…" that opens a jump-to-page
+  field, `‹ Page [n] of N ›` on phones. `[` / `]` page, Shift+`[` / `]` go to the ends (physical
+  keys); the reader turns them off in the View menu, a screen turns them off with
+  `pageHotkeys={false}` or rebinds them. A loading page dims its rows, the next page is
+  prefetched, and a new page starts at the table's top.
+- **Selection.** Checkbox column with paint-select, Shift/Ctrl ranges, keyboard selection;
+  server-mode selection survives paging; `bulkActions` in a floating bar with "Select all N".
+- **Columns.** Persisted visibility (`columnsStorageKey`), drag to reorder, drag to resize,
+  `meta`: `sticky`, `align`, `valign`, `ellipsis`, `nowrap`, `className`, `headerTooltip`,
+  `onCell`, `filter`, `searchValue`.
+- **Rendering.** Sticky header in its own scroll box, virtualised body past 100 rows, grouped
+  rows (`groupRows`, `groupBy`, `groupsCollapsed`), expandable details, density, cards below `md`
+  (`renderMobileCard`), search highlighting, `summary`, `framed={false}` inside another card.
+- **Row actions.** `createKebabColumn`, mirrored in the right-click / long-press menu.
+- **Toolbar.** Search and the screen's `FilterBar` (`toolbar`); one "View" menu (CSV, density,
+  page shortcuts, sort for cards, grouping, saved views, columns); the screen's `commands`.
+
+Props are documented on `DataTableProps` in `src/data-table/types.ts`.
+
+## Development
+
+```sh
+npm ci
+npm test          # vitest, happy-dom
+npm run typecheck
+npm run build     # tsc file by file into dist/: "use client" stays on every module
+```
+
+Working on the kit inside an app: `npm run dev` here (`tsc --watch`), then `npm link
+@craazzzyyfoxx/admin-kit` in the app (`bun link` for bun). If the app's bundler refuses the
+symlink, use [`yalc`](https://github.com/wclr/yalc) (`yalc publish` here, `yalc add` there).
+
+## Releasing
+
+Bump `version` in `package.json`, add the entry to `CHANGELOG.md`, push a `vX.Y.Z` tag: the
+`publish` workflow tests, builds and publishes to npm with provenance. Versions stay `0.x` while
+the API settles; a breaking change bumps the minor.

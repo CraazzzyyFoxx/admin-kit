@@ -1,0 +1,25 @@
+/*
+ * Import right after `tailwindcss`: an app's own `@theme` coming later overrides these defaults.
+ * The kit's classes need shadcn's colour tokens as `--color-*` plus `--color-success`,
+ * `--color-warning`, `--color-info` and `--color-danger`, and `tw-animate-css`.
+ */
+
+/* Tailwind scans the kit's compiled files for its classes. */
+@source "./";
+
+@theme {
+  --text-label: 12px;
+  --text-label--line-height: 1.25;
+  --text-caption: 13px;
+  --text-caption--line-height: 1.4;
+  --text-body: 14px;
+  --text-body--line-height: 1.5;
+  --shadow-surface: 0 1px 2px rgb(0 0 0 / 0.06), 0 1px 1px rgb(0 0 0 / 0.03);
+}
+
+/* DataTable: a row's state tint fades instead of snapping. */
+@property --admin-row-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
