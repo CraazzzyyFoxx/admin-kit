@@ -8,7 +8,7 @@ export const ru: typeof en = {
       "rows": "Строк",
       "range": "{start}–{end} из {total}",
       "rowsPerPage": "Строк на странице",
-      "rowsAuto": "Авто"
+      "rowsAuto": "Авто · {count}"
     },
     "dataTable": {
       "noRecords": "Пока ничего нет.",

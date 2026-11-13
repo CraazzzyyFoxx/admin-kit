@@ -7,7 +7,7 @@ export const en = {
       "rows": "Rows",
       "range": "{start}–{end} of {total}",
       "rowsPerPage": "Rows per page",
-      "rowsAuto": "Auto"
+      "rowsAuto": "Auto · {count}"
     },
     "dataTable": {
       "noRecords": "Nothing here yet.",

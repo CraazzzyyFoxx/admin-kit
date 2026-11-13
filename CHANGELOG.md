@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+- Rows per page moved from the table footer into the View menu, as a radio list: "Auto · N"
+  shows how many rows the fit gives. The footer keeps the range, the summary and the pager, at
+  a fixed height.
+- The pick is remembered per screen (localStorage, under the table's preferences key);
+  `?per_page=` in a link still wins.
+- Default `pageSizeOptions` are 10, 25, 50, 100 (15 is gone from the list; it stays the size of a
+  phone's card list).
+
 ## 0.1.0
 
 First release: dudeduck's admin `DataTable` (with the reworked pagination), kit and the shadcn

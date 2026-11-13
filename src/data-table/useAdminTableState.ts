@@ -28,6 +28,19 @@ export interface AdminTableStateOptions<TData> {
   filterKey?: string;
   filters?: AdminTableFilters;
   onFiltersChange?: (next: AdminTableFilters) => void;
+  /** localStorage key for the reader's page size on this screen; `?per_page=` wins over it. */
+  pageSizeStorageKey?: string;
+}
+
+/** The page size the reader last picked on this screen, if any. */
+function readStoredPageSize(key: string | undefined): number | undefined {
+  if (!key) return undefined;
+  try {
+    const stored: unknown = JSON.parse(window.localStorage.getItem(key) ?? "null");
+    return typeof stored === "number" && Number.isInteger(stored) && stored > 0 ? stored : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 /**
@@ -43,7 +56,8 @@ export function useAdminTableState<TData>({
   initialSort,
   filterKey,
   filters: controlledFilters,
-  onFiltersChange
+  onFiltersChange,
+  pageSizeStorageKey
 }: AdminTableStateOptions<TData>) {
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 300);
@@ -151,7 +165,10 @@ export function useAdminTableState<TData>({
       const params = new URLSearchParams(window.location.search);
       const nextPage = parsePositiveInt(params.get("page"), 1);
       const nextSearch = params.get("search") ?? "";
-      const nextPageSize = parsePositiveInt(params.get("per_page"), initialPageSize);
+      const nextPageSize = parsePositiveInt(
+        params.get("per_page"),
+        readStoredPageSize(pageSizeStorageKey) ?? initialPageSize
+      );
       // No `?sort=` yet means the table is still on its default sort, not unsorted.
       const nextSorting = parseSorting(
         params,
@@ -183,7 +200,7 @@ export function useAdminTableState<TData>({
     syncStateFromUrl();
     window.addEventListener("popstate", syncStateFromUrl);
     return () => window.removeEventListener("popstate", syncStateFromUrl);
-  }, [initialPageSize]);
+  }, [initialPageSize, pageSizeStorageKey]);
 
   // URL sync
   useEffect(() => {
@@ -276,6 +293,18 @@ export function useAdminTableState<TData>({
     setCurrentPage(nextPage);
   };
 
+  /** The reader's pick: remembered for this screen, unless it is the screen's own default. */
+  const choosePageSize = (next: number | null) => {
+    setPageSize(next);
+    if (!pageSizeStorageKey) return;
+    try {
+      if (next === initialPageSize) window.localStorage.removeItem(pageSizeStorageKey);
+      else window.localStorage.setItem(pageSizeStorageKey, JSON.stringify(next));
+    } catch {
+      // Storage full or blocked: the pick still applies, only not across visits.
+    }
+  };
+
   return {
     searchValue,
     setSearchValue,
@@ -284,6 +313,7 @@ export function useAdminTableState<TData>({
     setCurrentPage,
     pageSize: safePageSize,
     setPageSize,
+    choosePageSize,
     refitPage,
     sorting,
     setSorting,

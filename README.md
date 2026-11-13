@@ -66,7 +66,9 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
   everything in memory: search, sort, filters and paging run locally).
 - **URL is the state.** Page, search, page size, sort and column filters are mirrored into the
   query string and restored from it; back/forward works.
-- **Auto page size.** A `pages` table without `initialPageSize` fits its page to the viewport.
+- **Rows per page.** In the View menu: "Auto · N" (a `pages` table without `initialPageSize` fits
+  its page to the viewport) and `pageSizeOptions` (default 10, 25, 50, 100). The pick is
+  remembered per screen in localStorage; a link's `?per_page=` wins over it.
 - **Paging.** Seven fixed page slots (the arrows never move), a "…" that opens a jump-to-page
   field, `‹ Page [n] of N ›` on phones. `[` / `]` page, Shift+`[` / `]` go to the ends (physical
   keys); the reader turns them off in the View menu, a screen turns them off with
@@ -82,7 +84,8 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
   (`renderMobileCard`), search highlighting, `summary`, `framed={false}` inside another card.
 - **Row actions.** `createKebabColumn`, mirrored in the right-click / long-press menu.
 - **Toolbar.** Search and the screen's `FilterBar` (`toolbar`); one "View" menu (CSV, density,
-  page shortcuts, sort for cards, grouping, saved views, columns); the screen's `commands`.
+  page shortcuts, rows per page, sort for cards, grouping, saved views, columns); the screen's
+  `commands`. The footer holds only the range ("1–15 of 1 860"), `summary` and the pager.
 
 Props are documented on `DataTableProps` in `src/data-table/types.ts`.
 

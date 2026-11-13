@@ -67,6 +67,16 @@ export interface AdminTableViewProps {
   /** The reader's paging hotkeys on or off; absent where the table has no pager or the screen turned them off. */
   pageHotkeys?: boolean;
   onTogglePageHotkeys: () => void;
+  /**
+   * Rows per page; absent where the table has no pager. `value` is a size or "auto", the size
+   * fitted to the viewport, which is offered (with its current row count) only where `autoRows` is set.
+   */
+  pageSize?: {
+    value: string;
+    autoRows?: number;
+    options: number[];
+    onChange: (value: string) => void;
+  };
   prefsKey: string;
   visibility: Record<string, boolean>;
   onVisibilityChange: (next: Record<string, boolean>) => void;
@@ -315,6 +325,7 @@ function ViewMenu({
   onToggleDensity,
   pageHotkeys,
   onTogglePageHotkeys,
+  pageSize,
   prefsKey,
   visibility,
   onVisibilityChange,
@@ -326,6 +337,7 @@ function ViewMenu({
 }: Readonly<AdminTableViewProps & { narrow: boolean; commands: TableCommand[] }>) {
   const t = useTranslations("adminKit.dataTable");
   const actionsT = useTranslations("adminKit.actions");
+  const tableT = useTranslations("adminKit.table");
   const savedViews = useSavedViews(prefsKey, {
     get: () => visibility,
     apply: (next) => onVisibilityChange(next as Record<string, boolean>)
@@ -396,6 +408,27 @@ function ViewMenu({
                 >
                   {t("pageHotkeys")}
                 </DropdownMenuCheckboxItem>
+              ) : null}
+              {pageSize ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel className="text-caption font-normal text-muted-foreground">
+                    {tableT("rowsPerPage")}
+                  </DropdownMenuLabel>
+                  <DropdownMenuRadioGroup value={pageSize.value} onValueChange={pageSize.onChange}>
+                    {pageSize.autoRows !== undefined ? (
+                      <DropdownMenuRadioItem value="auto" className="tabular-nums">
+                        {tableT("rowsAuto", { count: pageSize.autoRows })}
+                      </DropdownMenuRadioItem>
+                    ) : null}
+                    {pageSize.options.map((option) => (
+                      <DropdownMenuRadioItem key={option} value={String(option)} className="tabular-nums">
+                        {option}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                  <DropdownMenuSeparator />
+                </>
               ) : null}
               {sort?.columns.length ? (
                 <DropdownMenuItem onSelect={enter("sort")}>
