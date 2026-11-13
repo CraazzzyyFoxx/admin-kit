@@ -11,3 +11,10 @@ primitives they use, moved out of the app.
   `describeError`.
 - Strings live under the `adminKit` namespace (`@craazzzyyfoxx/admin-kit/messages`, en and ru).
 - overwatch-tournaments' behavior tests run here, on happy-dom.
+- Primitives cover overwatch-tournaments' API too: `button` variants `accent`, `positive`, `dashed`,
+  `ghost-destructive`, sizes `inline`, `label`, `icon-toolbar`, `type="button"` by default and
+  `selectTriggerClass(size, variant)`; `card`/`card` title `asChild`; `table` `wrapperClassName`;
+  `popover` `animate` and `PopoverClose`; `select`/`combobox` `variant="surface"`; `input` `size` and
+  `controlSurfaceClass`; `dialog` `variant="panel"` with the sheet's shared exports and a translated
+  close label; `skeleton` `variant="text"`; `icon-tooltip` without children; `SaveBar`
+  `guardNavigation` and `onDirtyChange`.

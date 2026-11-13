@@ -52,8 +52,8 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
 | Path | Holds |
 | --- | --- |
 | `@craazzzyyfoxx/admin-kit/data-table` | `DataTable`, `columnMeta`, `createKebabColumn`, filters, types (and `/data-table/<file>` for the rest) |
-| `@craazzzyyfoxx/admin-kit/kit/<name>` | `ConfirmDialog`, `EntityFormDialog`, `EmptyNote` (`LoadErrorNote`), `ErrorDetails`, `Clipboard`, `FilterBar`, `useFilters`, `ServerSearchCombobox`, `useSearchComboboxQuery`, `useUnsavedGuard`, `SaveBar` |
-| `@craazzzyyfoxx/admin-kit/ui/<name>` | The shadcn primitives the kit is built from (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies. |
+| `@craazzzyyfoxx/admin-kit/kit/<name>` | `ConfirmDialog`, `EntityFormDialog`, `EmptyNote` (`LoadErrorNote`), `ErrorDetails`, `Clipboard`, `FilterBar`, `useFilters`, `ServerSearchCombobox`, `useSearchComboboxQuery`, `useUnsavedGuard`, `SaveBar` (`guardNavigation`, `onDirtyChange`) |
+| `@craazzzyyfoxx/admin-kit/ui/<name>` | The shadcn primitives the kit is built from (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies. `button` also has the `accent`, `positive`, `dashed` and `ghost-destructive` variants and the `inline`, `label` and `icon-toolbar` sizes; `card` and its title take `asChild`; `table` a `wrapperClassName`; `popover` `animate` and `PopoverClose`; `select`/`combobox` a `variant` (`surface`); `input` a `size` and `controlSurfaceClass`; `dialog` a `panel` variant plus `MODAL_SURFACE_CLASS`, `PANEL_CONTENT_CLASS` and `ModalCloseButton` for a sheet; `skeleton` a `text` variant. |
 | `@craazzzyyfoxx/admin-kit/provider` | `AdminKitProvider`, `useDescribeError` |
 | `@craazzzyyfoxx/admin-kit/messages` | `en`, `ru` |
 | `@craazzzyyfoxx/admin-kit/styles.css` | See Setup |

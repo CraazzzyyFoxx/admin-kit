@@ -28,10 +28,14 @@ function PopoverContent({
   className,
   align = "center",
   sideOffset = 4,
+  animate = true,
   onWheelCapture,
   onTouchMove,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: React.ComponentProps<typeof PopoverPrimitive.Content> & {
+  /** `false` for a panel that must not fade (a hover card that follows the pointer). */
+  animate?: boolean;
+}) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
@@ -51,13 +55,17 @@ function PopoverContent({
         className={cn(
           "z-50 w-72 origin-(--radix-popover-content-transform-origin) p-4 outline-hidden",
           floatingPanelClass,
-          floatingPanelFadeClass,
+          animate && floatingPanelFadeClass,
           className
         )}
         {...props}
       />
     </PopoverPrimitive.Portal>
   );
+}
+
+function PopoverClose({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Close>) {
+  return <PopoverPrimitive.Close data-slot="popover-close" {...props} />;
 }
 
 function PopoverAnchor({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
@@ -93,6 +101,7 @@ export {
   PopoverTrigger,
   PopoverContent,
   PopoverAnchor,
+  PopoverClose,
   PopoverHeader,
   PopoverTitle,
   PopoverDescription

@@ -3,7 +3,7 @@
 import { type ReactElement, type ReactNode } from "react";
 import { Check, ChevronDown } from "lucide-react";
 
-import { selectTriggerClass } from "./button.js";
+import { selectTriggerClass, type SelectTriggerVariant } from "./button.js";
 import { triggerChevronClass } from "./chevron.js";
 import {
   Command,
@@ -58,6 +58,8 @@ interface ComboboxDefaultTrigger {
   triggerClassName?: string;
   /** `sm` is the 32px toolbar row (13px text); `default` the 36px form row (14px). */
   size?: "sm" | "default";
+  /** `surface` wears the form-field skin `Input` does. */
+  variant?: SelectTriggerVariant;
   disabled?: boolean;
   "aria-invalid"?: boolean;
   "aria-describedby"?: string;
@@ -140,7 +142,7 @@ export function Combobox(props: Readonly<ComboboxProps>) {
         aria-invalid={props["aria-invalid"]}
         aria-describedby={props["aria-describedby"]}
         data-placeholder={empty ? "" : undefined}
-        className={cn(selectTriggerClass(props.size), props.triggerClassName)}
+        className={cn(selectTriggerClass(props.size, props.variant), props.triggerClassName)}
       >
         <span
           title={

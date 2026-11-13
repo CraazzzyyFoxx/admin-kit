@@ -12,8 +12,8 @@ interface IconTooltipProps {
   hint?: ReactNode;
   side?: "top" | "right" | "bottom" | "left";
   className?: string;
-  /** The glyph; mark it `aria-hidden`, `label` already names it. */
-  children: ReactNode;
+  /** The glyph; mark it `aria-hidden`, `label` already names it. Omit for a glyph drawn by `className` alone. */
+  children?: ReactNode;
   /**
    * The child is a control -- an icon button -- that carries its own
    * accessible name: wrap it as the trigger instead of announcing an image.

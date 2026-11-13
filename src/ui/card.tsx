@@ -1,9 +1,19 @@
 import * as React from "react";
+import { Slot } from "radix-ui";
 import { cn } from "../lib/utils.js";
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+/**
+ * A `<div>` by default; `asChild` renders the element the card actually is where it belongs in
+ * the page outline: `<Card asChild><section aria-label="…">`.
+ */
+function Card({
+  className,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : "div";
   return (
-    <div
+    <Comp
       data-slot="card"
       className={cn(
         "flex flex-col gap-5 rounded-xl border bg-card py-5 text-card-foreground shadow-surface",
@@ -27,9 +37,15 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+/** `asChild` with a heading element wherever the card belongs in the page outline. */
+function CardTitle({
+  className,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : "div";
   return (
-    <div
+    <Comp
       data-slot="card-title"
       className={cn("leading-none font-semibold tracking-tight", className)}
       {...props}

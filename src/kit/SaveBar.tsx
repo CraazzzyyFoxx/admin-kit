@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AlertTriangle } from "lucide-react";
@@ -36,6 +36,19 @@ export interface SaveBarProps {
   primaryLabel?: string;
   /** Extra action before Discard, e.g. a Cancel link out of the form. */
   secondary?: ReactNode;
+  /**
+   * While `edited`, intercept internal link clicks anywhere in the document so leaving the page
+   * goes through the discard prompt. Defaults to `true`. Pass `false` when the screen's own routed
+   * sub-navigation (`?tab=`) is part of the form: those links do not unmount anything, so the
+   * prompt would be a false alarm. The tab-close prompt stays armed either way.
+   */
+  guardNavigation?: boolean;
+  /**
+   * Called with whether leaving now would lose edits (`edited ?? dirty`, false while saving is not
+   * considered), and with `false` when the bar unmounts. For a host that needs to know, such as a
+   * page that holds back its own navigation while the form is unsaved.
+   */
+  onDirtyChange?: (unsaved: boolean) => void;
 }
 
 /**
@@ -55,7 +68,9 @@ export function SaveBar({
   onSave,
   saving = false,
   primaryLabel,
-  secondary
+  secondary,
+  guardNavigation = true,
+  onDirtyChange
 }: Readonly<SaveBarProps>) {
   const t = useTranslations("adminKit.saveBar");
   const router = useRouter();
@@ -65,8 +80,16 @@ export function SaveBar({
 
   useUnsavedGuard({
     dirty: (edited ?? dirty) && !saving,
+    guardNavigation,
     onNavigationBlocked: handleNavigationBlocked
   });
+
+  const unsaved = edited ?? dirty;
+  useEffect(() => {
+    if (!onDirtyChange) return;
+    onDirtyChange(unsaved);
+    return () => onDirtyChange(false);
+  }, [onDirtyChange, unsaved]);
 
   if (!dirty) return null;
 

@@ -3,9 +3,17 @@
 import * as React from "react";
 import { cn } from "../lib/utils.js";
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+/** `wrapperClassName` styles the scroll box around the `<table>`; a table that owns its scrolling sets it. */
+function Table({
+  className,
+  wrapperClassName,
+  ...props
+}: React.ComponentProps<"table"> & { wrapperClassName?: string }) {
   return (
-    <div data-slot="table-container" className="relative w-full overflow-x-auto">
+    <div
+      data-slot="table-container"
+      className={cn("relative w-full overflow-x-auto", wrapperClassName)}
+    >
       <table
         data-slot="table"
         className={cn("w-full caption-bottom text-sm", className)}
