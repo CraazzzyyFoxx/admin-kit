@@ -192,7 +192,7 @@ export function Combobox(props: Readonly<ComboboxProps>) {
                   <CommandItem
                     value={clear.value}
                     onSelect={clear.onSelect}
-                    className="text-[color:var(--color-muted-foreground)]"
+                    className="text-[color:--theme(--color-muted-foreground)]"
                   >
                     <span className="min-w-0 flex-1 truncate">{clear.label}</span>
                     <ComboboxCheck selected={clear.selected ?? empty} />
@@ -215,7 +215,7 @@ export function ComboboxCheck({ selected }: Readonly<{ selected: boolean }>) {
     <Check
       aria-hidden
       className={cn(
-        "h-4 w-4 shrink-0 text-[color:var(--color-primary)]",
+        "h-4 w-4 shrink-0 text-[color:--theme(--color-primary)]",
         selected ? "opacity-100" : "opacity-0"
       )}
     />
@@ -230,7 +230,7 @@ export function ComboboxMeta({
   return (
     <span
       className={cn(
-        "shrink-0 text-caption tabular-nums text-[color:var(--color-muted-foreground)]",
+        "shrink-0 text-caption tabular-nums text-[color:--theme(--color-muted-foreground)]",
         className
       )}
     >

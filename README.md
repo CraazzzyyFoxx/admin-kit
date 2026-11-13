@@ -26,7 +26,9 @@ It points Tailwind at the kit's files and adds `text-label` / `text-caption` / `
 `shadow-surface` and the `--admin-row-tint` property. The app's `@theme` overrides any of them.
 The kit colours only through Tailwind's theme: shadcn's tokens as `--color-*` (`--color-card`,
 `--color-primary`, …) plus `--color-success`, `--color-warning`, `--color-info` and
-`--color-danger`, in whatever colour format the app uses.
+`--color-danger`, in whatever colour format the app uses. It reads them as utilities
+(`bg-card`) or `--theme(--color-*)`, never `var(--color-*)`: those resolve where the app's
+theme class sits, so a `.dark` on `<body>` still applies.
 
 **Messages.** The kit's strings sit under `adminKit`; merge them into the app's next-intl messages:
 

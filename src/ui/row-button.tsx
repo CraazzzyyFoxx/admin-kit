@@ -24,7 +24,7 @@ const RowButton = React.forwardRef<
         "w-full cursor-pointer text-left transition-colors",
         // `:where` keeps the hover at a bare class's weight, so a caller's own
         // `hover:` and `aria-[current=true]:` fills still win over it.
-        "[@media(hover:hover)]:[&:where(:hover:not(:disabled))]:bg-[color:var(--color-muted)] aria-[current=true]:bg-[color:var(--color-accent)]",
+        "[@media(hover:hover)]:[&:where(:hover:not(:disabled))]:bg-[color:--theme(--color-muted)] aria-[current=true]:bg-[color:--theme(--color-accent)]",
         "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className

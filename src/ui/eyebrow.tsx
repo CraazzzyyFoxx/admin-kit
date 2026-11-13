@@ -12,9 +12,9 @@ import { cn } from "../lib/utils.js";
 export type EyebrowTone = "faint" | "dim" | "muted";
 
 const EYEBROW_TONE: Record<EyebrowTone, string> = {
-  faint: "text-[color:var(--color-muted-foreground)]",
-  dim: "text-[color:var(--color-muted-foreground)]",
-  muted: "text-[color:var(--color-muted-foreground)]"
+  faint: "text-[color:--theme(--color-muted-foreground)]",
+  dim: "text-[color:--theme(--color-muted-foreground)]",
+  muted: "text-[color:--theme(--color-muted-foreground)]"
 };
 
 /**

@@ -578,8 +578,8 @@ export function DataTable<TData>({
         "scroll-mt-16 gap-0 overflow-hidden py-0",
         // The pinned cells' opaque surface (`STICKY_CELL_CLASS`): the card they sit in.
         framed
-          ? "shadow-surface [--admin-sticky-bg:var(--color-card)]"
-          : "rounded-none border-0 border-t bg-transparent shadow-none [--admin-sticky-bg:var(--color-card)]"
+          ? "shadow-surface [--admin-sticky-bg:--theme(--color-card)]"
+          : "rounded-none border-0 border-t bg-transparent shadow-none [--admin-sticky-bg:--theme(--color-card)]"
       )}
     >
       {toolbarLead ? <div className="px-4 pt-3">{toolbarLead}</div> : null}
@@ -795,7 +795,7 @@ export function DataTable<TData>({
           }
         />
       ) : summary ? (
-        <div className="border-t border-border px-4 py-2.5 text-label text-[color:var(--color-muted-foreground)]">
+        <div className="border-t border-border px-4 py-2.5 text-label text-[color:--theme(--color-muted-foreground)]">
           {summary}
         </div>
       ) : null}

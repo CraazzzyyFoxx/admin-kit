@@ -29,15 +29,15 @@ export const STICKY_CELL_CLASS =
 
 /** Every header cell shares that surface, under a muted wash: the header sticks to the top of the scroll box, so a translucent one would show the rows passing under it. */
 export const HEAD_SURFACE_CLASS =
-  "bg-[color:color-mix(in_oklab,var(--color-muted)_45%,var(--admin-sticky-bg))]";
+  "bg-[color:color-mix(in_oklab,--theme(--color-muted)_45%,var(--admin-sticky-bg))]";
 
 /** A pinned header cell: above the pinned body cells, since it holds both axes at the corner. */
 export const STICKY_HEAD_CLASS = cn(STICKY_CELL_CLASS, "z-3", HEAD_SURFACE_CLASS);
 
 /** The pinned block's inner edge: the only cue that the rest scrolls under it. */
 const STICKY_EDGE_CLASS = {
-  left: "shadow-[inset_-1px_0_0_var(--color-border)]",
-  right: "shadow-[inset_1px_0_0_var(--color-border)]"
+  left: "shadow-[inset_-1px_0_0_--theme(--color-border)]",
+  right: "shadow-[inset_1px_0_0_--theme(--color-border)]"
 } as const;
 
 /** What `stickyCell` hands a cell: its classes and offset, plus `data-sticky` (`left`/`right`) and `data-sticky-edge` on the block's inner edge. */

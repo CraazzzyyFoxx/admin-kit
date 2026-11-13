@@ -13,7 +13,7 @@ export interface FilterChipProps
   active?: boolean;
   /** Optional trailing count (e.g. how many rows match this filter). */
   count?: number | string | null;
-  /** Optional leading dot colour token, e.g. `var(--color-destructive)` for "live". */
+  /** Optional leading dot colour, set as an inline style: a CSS colour such as the app's `var(--destructive)`. */
   dotColor?: string;
   /**
    * Colour of the active state, replacing teal: a CSS colour or token such as
@@ -53,7 +53,7 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
           ? cn("border", TONE_TINT, accent ? undefined : TONE_HUE.accent)
           : cn(
               outlineSurfaceClass,
-              "disabled:hover:border-[color:var(--color-border)] disabled:hover:bg-[color:var(--color-accent)]"
+              "disabled:hover:border-[color:--theme(--color-border)] disabled:hover:bg-[color:--theme(--color-accent)]"
             ),
         className
       )}
@@ -69,7 +69,7 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
             "rounded-sm px-1.5 py-px text-label",
             active
               ? "bg-[color:color-mix(in_srgb,var(--tone-hue)_16%,transparent)] text-[color:var(--tone-hue)]"
-              : "bg-[color:var(--color-accent)] text-[color:var(--color-muted-foreground)]"
+              : "bg-[color:--theme(--color-accent)] text-[color:--theme(--color-muted-foreground)]"
           )}
         >
           {count}

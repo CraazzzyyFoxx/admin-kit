@@ -13,12 +13,12 @@ export const TONE_TINT =
 
 /** `--tone-hue` per tone, for a surface that spends the hue its own way (a toast's rim and icon, an active tab's count). */
 export const TONE_HUE: Record<Tone, string> = {
-  neutral: "[--tone-hue:var(--color-muted-foreground)]",
-  accent: "[--tone-hue:var(--color-primary)]",
-  success: "[--tone-hue:var(--color-success)]",
-  warning: "[--tone-hue:var(--color-warning)]",
-  info: "[--tone-hue:var(--color-info)]",
-  danger: "[--tone-hue:var(--color-destructive)]"
+  neutral: "[--tone-hue:--theme(--color-muted-foreground)]",
+  accent: "[--tone-hue:--theme(--color-primary)]",
+  success: "[--tone-hue:--theme(--color-success)]",
+  warning: "[--tone-hue:--theme(--color-warning)]",
+  info: "[--tone-hue:--theme(--color-info)]",
+  danger: "[--tone-hue:--theme(--color-destructive)]"
 };
 
 /** Tinted surface: border colour + wash + readable text. The caller adds `border`. */
@@ -33,10 +33,10 @@ export const TONE_CLASS: Record<Tone, string> = {
 
 /** Text-only tone, for icons and inline labels on an untinted surface. */
 export const TONE_TEXT: Record<Tone, string> = {
-  neutral: "text-[color:var(--color-muted-foreground)]",
-  accent: "text-[color:var(--color-primary)]",
-  success: "text-[color:var(--color-success)]",
-  warning: "text-[color:var(--color-warning)]",
-  info: "text-[color:var(--color-info)]",
-  danger: "text-[color:var(--color-destructive)]"
+  neutral: "text-[color:--theme(--color-muted-foreground)]",
+  accent: "text-[color:--theme(--color-primary)]",
+  success: "text-[color:--theme(--color-success)]",
+  warning: "text-[color:--theme(--color-warning)]",
+  info: "text-[color:--theme(--color-info)]",
+  danger: "text-[color:--theme(--color-destructive)]"
 };

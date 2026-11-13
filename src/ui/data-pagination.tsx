@@ -368,7 +368,7 @@ export function DataPagination({
       className={cn("flex flex-wrap items-center gap-3", className)}
     >
       {leading ? (
-        <div className="text-label text-[color:var(--color-muted-foreground)]">{leading}</div>
+        <div className="text-label text-[color:--theme(--color-muted-foreground)]">{leading}</div>
       ) : null}
       {hasControls ? (
         <div

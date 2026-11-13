@@ -12,7 +12,7 @@ export interface StatusDotProps {
   /**
    * For a colour that only exists at runtime (a role tint, a server-supplied
    * status hue): `style={{ color }}`. A colour that is a token belongs in
-   * `className` as `text-[color:var(--color-destructive)]`.
+   * `className` as `text-[color:--theme(--color-destructive)]`.
    */
   style?: CSSProperties;
 }
