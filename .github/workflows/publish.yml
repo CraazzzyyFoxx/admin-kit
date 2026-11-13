@@ -13,15 +13,14 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      # Node 24 ships npm 11 (trusted publishing needs 11.5.1+). No dependency cache in a release build.
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version: 24
           registry-url: https://registry.npmjs.org
-      # Trusted publishing needs npm 11.5.1+; Node 22 ships 10.x.
-      - run: npm install -g npm@latest
+          package-manager-cache: false
       - run: npm ci
       - name: Tag matches package.json
         run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
-      # prepublishOnly runs typecheck, tests and the build.
-      - run: npm publish --provenance --access public
+      # prepublishOnly runs typecheck, tests and the build; provenance comes with trusted publishing.
+      - run: npm publish --access public
