@@ -98,10 +98,10 @@ const BodyRow = memo(function BodyRow<TData>({
         // inspector's current-row mark, which outranks hover.
         "group bg-[color:var(--admin-row-tint)] hover:bg-[color:var(--admin-row-tint)] aria-[current=true]:bg-[color:var(--admin-row-tint)] transition-[--admin-row-tint] duration-150",
         selected
-          ? "[--admin-row-tint:color-mix(in_oklab,--theme(--color-primary)_8%,transparent)]"
+          ? "[--admin-row-tint:var(--admin-row-selected,color-mix(in_oklab,--theme(--color-primary)_8%,transparent))]"
           : isCurrent
             ? "[--admin-row-tint:color-mix(in_oklab,--theme(--color-primary)_10%,transparent)] hover:[--admin-row-tint:color-mix(in_oklab,--theme(--color-primary)_16%,transparent)]"
-            : "hover:[--admin-row-tint:--theme(--color-muted)]",
+            : "hover:[--admin-row-tint:var(--admin-row-hover,--theme(--color-muted))]",
         "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         shared.hasRowAction && "cursor-pointer"
       )}

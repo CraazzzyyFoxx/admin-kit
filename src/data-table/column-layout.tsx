@@ -27,9 +27,9 @@ const ADMIN_FLEXIBLE_FILL_PERCENT = 75;
 export const STICKY_CELL_CLASS =
   "sticky z-2 bg-[color:var(--admin-sticky-bg)] bg-[linear-gradient(var(--admin-row-tint),var(--admin-row-tint))] transition-colors";
 
-/** Every header cell shares that surface, under a muted wash: the header sticks to the top of the scroll box, so a translucent one would show the rows passing under it. */
+/** Every header cell shares that surface, under a muted wash (`--admin-head-bg` replaces the whole colour): the header sticks to the top of the scroll box, so a translucent one would show the rows passing under it. */
 export const HEAD_SURFACE_CLASS =
-  "bg-[color:color-mix(in_oklab,--theme(--color-muted)_45%,var(--admin-sticky-bg))]";
+  "bg-[color:var(--admin-head-bg,color-mix(in_oklab,--theme(--color-muted)_45%,var(--admin-sticky-bg)))]";
 
 /** A pinned header cell: above the pinned body cells, since it holds both axes at the corner. */
 export const STICKY_HEAD_CLASS = cn(STICKY_CELL_CLASS, "z-3", HEAD_SURFACE_CLASS);

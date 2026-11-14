@@ -7,7 +7,7 @@ import { cn } from "../lib/utils.js";
  * from it; `selectTriggerClass`'s `surface` variant does too, so a picker beside an input matches.
  */
 export const controlSurfaceClass =
-  "w-full min-w-0 rounded-md border border-input bg-transparent px-3 shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40";
+  "w-full min-w-0 rounded-md border border-admin-control bg-admin-control px-3 shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40";
 
 const INPUT_SIZE = {
   /** The 32px toolbar row. */

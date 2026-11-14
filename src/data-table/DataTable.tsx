@@ -573,7 +573,7 @@ export function DataTable<TData>({
         "scroll-mt-16 gap-0 overflow-hidden py-0",
         // The pinned cells' opaque surface (`STICKY_CELL_CLASS`): the card they sit in.
         framed
-          ? "shadow-surface [--admin-sticky-bg:--theme(--color-card)]"
+          ? "border-admin bg-admin-surface shadow-surface [--admin-sticky-bg:var(--admin-surface,--theme(--color-card))]"
           : "rounded-none border-0 border-t bg-transparent shadow-none [--admin-sticky-bg:--theme(--color-card)]"
       )}
     >
@@ -665,7 +665,7 @@ export function DataTable<TData>({
           // viewport (see `useTableScrollBox`).
           <Table
             ref={tableRef}
-            className="min-w-full border-separate border-spacing-0 [&_tbody>tr:not(:last-child)>td]:border-b [&_tbody>tr>td]:border-border/70"
+            className="min-w-full border-separate border-spacing-0 [&_tbody>tr:not(:last-child)>td]:border-b [&_tbody>tr>td]:border-admin-row"
             // A pointer reaching the table is the warning a column drag gives:
             // the reorder chunk is fetched then, usually before the header is hit.
             onPointerEnter={armColumnDnd}
@@ -758,7 +758,7 @@ export function DataTable<TData>({
           hotkeyScope={cardRef}
           // Fixed height: a fitted table measures the footer before the first page, while it
           // holds nothing yet; one page keeps the count and drops only the pager.
-          className="min-h-13 border-t border-border px-4 py-2.5"
+          className="min-h-13 border-t border-admin px-4 py-2.5"
           leading={
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               {safeTotal > 0 ? (
@@ -771,7 +771,7 @@ export function DataTable<TData>({
           }
         />
       ) : summary ? (
-        <div className="border-t border-border px-4 py-2.5 text-label text-[color:--theme(--color-muted-foreground)]">
+        <div className="border-t border-admin px-4 py-2.5 text-label text-admin-dim">
           {summary}
         </div>
       ) : null}

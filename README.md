@@ -30,6 +30,39 @@ The kit colours only through Tailwind's theme: shadcn's tokens as `--color-*` (`
 (`bg-card`) or `--theme(--color-*)`, which Tailwind inlines as the app's own value, never as
 `var(--color-*)`: that takes the value computed on `<html>`, so a `.dark` on `<body>` would miss it.
 
+**Theming.** Out of the box the kit wears the shadcn tokens above. An app that wants its own look
+for the table, filters and fields sets `--admin-*` variables; each one left unset keeps the
+default in the table. Any colour format works. Set them on the element that carries the theme
+class (`.dark`), or on `:root` when the theme lives there: a variable resolves where it is
+declared, so `hsl(var(--card))` declared on `:root` reads `:root`'s `--card`.
+
+```css
+.dark {
+  --admin-surface: color-mix(in srgb, hsl(var(--card)) 50%, hsl(var(--background)));
+  --admin-row-border: transparent;
+  --admin-head-case: uppercase;
+}
+```
+
+| Variable | Paints | Default |
+| --- | --- | --- |
+| `--admin-surface` | the framed table's card and its pinned cells | `--color-card` |
+| `--admin-border` | the frame, toolbar, header and footer rules | `--color-border` |
+| `--admin-row-border` | the rules between rows | `--color-border` at 70% |
+| `--admin-head-bg` | header cells (opaque: the header sticks over the rows) | `--color-muted` 45% over the surface |
+| `--admin-row-hover` | a hovered row | `--color-muted` |
+| `--admin-row-selected` | a selected row | `--color-primary` at 8% |
+| `--admin-head-fg` | column heads | `--color-muted-foreground` |
+| `--admin-fg-muted`, `--admin-fg-dim`, `--admin-fg-faint` | the eyebrow's `muted`/`dim`/`faint` tones; footer text (dim); the search icon and an idle chip's count (faint) | `--color-muted-foreground` |
+| `--admin-control-bg`, `--admin-control-border` | `Input` (and the `surface` select/combobox trigger), `Checkbox` | transparent (`--color-input` at 30% under `dark:`), `--color-input` |
+| `--admin-chip-bg` | an idle filter chip's count | `--color-accent` |
+| `--admin-head-weight`, `--admin-head-case`, `--admin-head-tracking` | column heads' weight, `text-transform`, `letter-spacing` | `500`, `none`, `normal` |
+| `--admin-data-font` | `font-family` of eyebrows, column heads and chip counts | inherited |
+
+The framed table's shadow is `shadow-surface`, shared with `Card`: `--shadow-surface: none` in the
+app's `@theme` flattens both. The same roles exist as utilities (`bg-admin-surface`,
+`border-admin`, `text-admin-dim`, …) for an app's own surfaces to match.
+
 **Messages.** The kit's strings sit under `adminKit`; merge them into the app's next-intl messages:
 
 ```ts

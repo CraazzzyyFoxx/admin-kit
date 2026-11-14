@@ -175,7 +175,7 @@ export function AdminTableToolbar({
       <div
         ref={ref}
         className={cn(
-          "flex flex-wrap items-center border-b border-border px-4 py-3",
+          "flex flex-wrap items-center border-b border-admin px-4 py-3",
           narrow ? "gap-2" : "gap-3"
         )}
       >

@@ -61,7 +61,7 @@ export function renderHeadCell<TData>(
       data-sticky={sticky["data-sticky"]}
       data-sticky-edge={sticky["data-sticky-edge"]}
       className={cn(
-        "border-b border-border text-xs font-medium text-muted-foreground",
+        "border-b border-admin text-xs font-admin-head font-admin-data tracking-admin-head admin-head-case text-admin-head",
         density === "compact" ? "h-8" : "h-9",
         sticky.className ? cn(sticky.className, "z-3", HEAD_SURFACE_CLASS) : HEAD_SURFACE_CLASS,
         isFirstColumn && "pl-4",
@@ -84,7 +84,7 @@ export function renderHeadCell<TData>(
               onClick={header.column.getToggleSortingHandler()}
               title={isClientMode ? i18n("sortHint") : undefined}
               className={cn(
-                "group/sort h-auto px-0 font-medium text-muted-foreground hover:bg-transparent hover:text-foreground",
+                "group/sort h-auto px-0 font-admin-head admin-head-case hover:bg-transparent hover:text-foreground",
                 sorted && "text-foreground"
               )}
             >

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0
+
+- Theming: `--admin-*` variables recolour the table (surface, rules, header, row hover and
+  selection), the eyebrow tones, filter-chip counts, the search icon, `Input` and `Checkbox`,
+  and set the column heads' weight, case, tracking and the label font. Unset, every one falls
+  back to the shadcn token it used before, so nothing changes until an app sets them. README
+  "Theming" lists them.
+- `styles.css` adds the matching utilities (`bg-admin-surface`, `border-admin`,
+  `border-admin-row`, `text-admin-{head,muted,dim,faint}`, `font-admin-{head,data}`,
+  `tracking-admin-head`, `admin-head-case`, `bg-admin-control`, `border-admin-control`,
+  `bg-admin-chip`); `cn` merges the type ones against `font-*`, `tracking-*` and case classes.
+
 ## 0.2.0
 
 - Rows per page moved from the table footer into the View menu, as a radio list: "Auto · N"

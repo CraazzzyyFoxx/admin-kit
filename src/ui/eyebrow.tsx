@@ -12,9 +12,9 @@ import { cn } from "../lib/utils.js";
 export type EyebrowTone = "faint" | "dim" | "muted";
 
 const EYEBROW_TONE: Record<EyebrowTone, string> = {
-  faint: "text-[color:--theme(--color-muted-foreground)]",
-  dim: "text-[color:--theme(--color-muted-foreground)]",
-  muted: "text-[color:--theme(--color-muted-foreground)]"
+  faint: "text-admin-faint",
+  dim: "text-admin-dim",
+  muted: "text-admin-muted"
 };
 
 /**
@@ -22,7 +22,7 @@ const EYEBROW_TONE: Record<EyebrowTone, string> = {
  * class). Merged with `cn`, so a `className` here may override the tone's colour.
  */
 export function eyebrowClass(tone: EyebrowTone = "faint", className?: string) {
-  return cn("text-label font-semibold uppercase tracking-label", EYEBROW_TONE[tone], className);
+  return cn("font-admin-data text-label font-semibold uppercase tracking-label", EYEBROW_TONE[tone], className);
 }
 
 type EyebrowProps = HTMLAttributes<HTMLElement> &

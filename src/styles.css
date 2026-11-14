@@ -2,6 +2,8 @@
  * Import right after `tailwindcss`: an app's own `@theme` coming later overrides these defaults.
  * The kit's classes need shadcn's colour tokens as `--color-*` plus `--color-success`,
  * `--color-warning`, `--color-info` and `--color-danger`, and `tw-animate-css`.
+ * The `--admin-*` variables below are the kit's own theme: unset, each falls back to the shadcn
+ * token named beside it; README "Theming" lists them.
  */
 
 /* Tailwind scans the kit's compiled files for its classes. */
@@ -22,4 +24,55 @@
   syntax: "<color>";
   inherits: true;
   initial-value: transparent;
+}
+
+/* Theme roles: `var(--admin-*, <shadcn default>)`. Set the variables on the element that holds the
+   app's theme class (or `:root`); a variable resolves where it is declared, not where it is used. */
+@utility bg-admin-surface {
+  background-color: var(--admin-surface, --theme(--color-card));
+}
+@utility border-admin {
+  border-color: var(--admin-border, --theme(--color-border));
+}
+@utility border-admin-row {
+  border-color: var(--admin-row-border, --theme(--color-border / 70%));
+}
+@utility text-admin-muted {
+  color: var(--admin-fg-muted, --theme(--color-muted-foreground));
+}
+@utility text-admin-dim {
+  color: var(--admin-fg-dim, --theme(--color-muted-foreground));
+}
+@utility text-admin-faint {
+  color: var(--admin-fg-faint, --theme(--color-muted-foreground));
+}
+@utility text-admin-head {
+  color: var(--admin-head-fg, --theme(--color-muted-foreground));
+}
+/* A column head's voice beyond its colour, one utility per property so `cn` (lib/utils.ts) can
+   replace `font-medium` and the like with them. */
+@utility font-admin-head {
+  font-weight: var(--admin-head-weight, 500);
+}
+@utility tracking-admin-head {
+  letter-spacing: var(--admin-head-tracking, normal);
+}
+@utility admin-head-case {
+  text-transform: var(--admin-head-case, none);
+}
+/* The label and number voice: eyebrows, column heads, chip counts. */
+@utility font-admin-data {
+  font-family: var(--admin-data-font, inherit);
+}
+@utility bg-admin-control {
+  background-color: var(--admin-control-bg, transparent);
+  @variant dark {
+    background-color: var(--admin-control-bg, --theme(--color-input / 30%));
+  }
+}
+@utility border-admin-control {
+  border-color: var(--admin-control-border, --theme(--color-input));
+}
+@utility bg-admin-chip {
+  background-color: var(--admin-chip-bg, --theme(--color-accent));
 }

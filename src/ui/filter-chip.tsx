@@ -66,10 +66,10 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
         <span
           data-slot="filter-chip-count"
           className={cn(
-            "rounded-sm px-1.5 py-px text-label",
+            "rounded-sm px-1.5 py-px font-admin-data text-label",
             active
               ? "bg-[color:color-mix(in_srgb,var(--tone-hue)_16%,transparent)] text-[color:var(--tone-hue)]"
-              : "bg-[color:--theme(--color-accent)] text-[color:--theme(--color-muted-foreground)]"
+              : "bg-admin-chip text-admin-faint"
           )}
         >
           {count}

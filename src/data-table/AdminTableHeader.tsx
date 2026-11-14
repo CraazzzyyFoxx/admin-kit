@@ -76,7 +76,7 @@ export function AdminTableHeader<TData>({
             {hasLeadingColumn ? (
               <TableHead
                 className={cn(
-                  "w-10 min-w-10 border-b border-border pl-4 pr-2 text-left",
+                  "w-10 min-w-10 border-b border-admin pl-4 pr-2 text-left",
                   density === "compact" ? "h-8" : "h-9",
                   layout.stickyLeft.size > 0 ? STICKY_HEAD_CLASS : HEAD_SURFACE_CLASS
                 )}

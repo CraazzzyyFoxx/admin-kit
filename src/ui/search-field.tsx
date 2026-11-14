@@ -76,7 +76,7 @@ export const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
         <div className="relative">
           <Search
             aria-hidden
-            className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[color:--theme(--color-muted-foreground)]"
+            className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-admin-faint"
           />
           <Input
             ref={ref}
