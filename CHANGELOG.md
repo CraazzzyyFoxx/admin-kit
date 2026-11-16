@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+- `Card` takes `variant="panel"`: flush (no `py-5`, no `gap-5`), clipping, the same
+  `PANEL_CONTENT_CLASS` as `DialogContent variant="panel"`. For a card that is a work surface made
+  of its own ruled regions, which each pad themselves; the default's padding stacked on theirs.
+
 ## 0.3.1
 
 - `TooltipContent` opens on the shared floating panel (`floatingPanelClass`: `bg-popover`, border,

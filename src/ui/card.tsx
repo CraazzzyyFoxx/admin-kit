@@ -2,21 +2,29 @@ import * as React from "react";
 import { Slot } from "radix-ui";
 import { cn } from "../lib/utils.js";
 
+import { PANEL_CONTENT_CLASS, type PanelVariant } from "./panel.js";
+
 /**
  * A `<div>` by default; `asChild` renders the element the card actually is where it belongs in
  * the page outline: `<Card asChild><section aria-label="…">`.
+ *
+ * The default pads itself (`py-5`, `gap-5`) for `CardHeader`/`CardContent`/`CardFooter`. `panel`
+ * is a work surface built from its own ruled regions (an inspector beside a table): flush like
+ * `DialogContent variant="panel"`, each region brings its own padding.
  */
 function Card({
   className,
   asChild = false,
+  variant = "default",
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+}: React.ComponentProps<"div"> & { asChild?: boolean; variant?: PanelVariant }) {
   const Comp = asChild ? Slot.Root : "div";
   return (
     <Comp
       data-slot="card"
       className={cn(
         "flex flex-col gap-5 rounded-xl border bg-card py-5 text-card-foreground shadow-surface",
+        variant === "panel" && PANEL_CONTENT_CLASS,
         className
       )}
       {...props}
