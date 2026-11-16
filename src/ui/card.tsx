@@ -2,97 +2,56 @@ import * as React from "react";
 import { Slot } from "radix-ui";
 import { cn } from "../lib/utils.js";
 
-import { PANEL_CONTENT_CLASS, type PanelVariant } from "./panel.js";
-
 /**
- * A `<div>` by default; `asChild` renders the element the card actually is where it belongs in
- * the page outline: `<Card asChild><section aria-label="…">`.
+ * A bare surface: fill, border, radius, no padding or layout of its own. A `<div>` by default;
+ * `asChild` renders the element the card actually is where it belongs in the page outline:
+ * `<Card asChild><section aria-label="…">`.
  *
- * The default pads itself (`py-5`, `gap-5`) for `CardHeader`/`CardContent`/`CardFooter`. `panel`
- * is a work surface built from its own ruled regions (an inspector beside a table): flush like
- * `DialogContent variant="panel"`, each region brings its own padding.
+ * Padding belongs to what is inside: `CardHeader`/`CardContent`/`CardFooter` pad themselves, and
+ * a card built from its own regions (a table, a ruled list, an inspector) is flush without
+ * opting out of anything. A card that padded itself stacked that padding on every such region.
  */
-function Card({
-  className,
-  asChild = false,
-  variant = "default",
-  ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean; variant?: PanelVariant }) {
+function Card({ className, asChild = false, ...props }: React.ComponentProps<"div"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "div";
   return (
     <Comp
       data-slot="card"
-      className={cn(
-        "flex flex-col gap-5 rounded-xl border bg-card py-5 text-card-foreground shadow-surface",
-        variant === "panel" && PANEL_CONTENT_CLASS,
-        className
-      )}
+      className={cn("rounded-xl border bg-card text-card-foreground shadow-surface", className)}
       {...props}
     />
   );
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        "@container/card-header grid auto-rows-min items-center gap-1.5 px-5 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] has-data-[slot=card-description]:items-start [.border-b]:pb-5",
-        className
-      )}
-      {...props}
-    />
-  );
+  return <div data-slot="card-header" className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />;
 }
 
-/** `asChild` with a heading element wherever the card belongs in the page outline. */
+/**
+ * The `text-heading` type role: an app sets `--text-heading` in its theme. `asChild` with a heading
+ * element wherever the card belongs in the page outline. A smaller title goes on `CardTitle`'s own
+ * `className`, not the child's: `Slot` joins the two without merging, and both sizes would stay.
+ */
 function CardTitle({
   className,
   asChild = false,
   ...props
 }: React.ComponentProps<"div"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "div";
-  return (
-    <Comp
-      data-slot="card-title"
-      className={cn("leading-none font-semibold tracking-tight", className)}
-      {...props}
-    />
-  );
+  return <Comp data-slot="card-title" className={cn("text-heading font-semibold", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  );
-}
-
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
-      {...props}
-    />
+    <div data-slot="card-description" className={cn("text-sm text-muted-foreground", className)} {...props} />
   );
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="card-content" className={cn("px-5", className)} {...props} />;
+  return <div data-slot="card-content" className={cn("p-6 pt-0", className)} {...props} />;
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn("flex items-center px-5 [.border-t]:pt-5", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="card-footer" className={cn("flex items-center p-6 pt-0", className)} {...props} />;
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent };
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

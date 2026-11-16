@@ -570,7 +570,7 @@ export function DataTable<TData>({
       // A list screen's mark: the app shell lets a page holding a fitted table use the full width.
       data-fitted={fitsViewport || undefined}
       className={cn(
-        "scroll-mt-16 gap-0 overflow-hidden py-0",
+        "flex scroll-mt-16 flex-col overflow-hidden",
         // The pinned cells' opaque surface (`STICKY_CELL_CLASS`): the card they sit in.
         framed
           ? "border-admin bg-admin-surface shadow-surface [--admin-sticky-bg:var(--admin-surface,--theme(--color-card))]"

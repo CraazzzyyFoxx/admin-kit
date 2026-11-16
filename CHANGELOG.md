@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0
+
+Breaking: `Card` is a bare surface again.
+
+- `Card` drops `flex flex-col gap-5 py-5`: fill, border, radius and `shadow-surface` only. A card
+  built from its own regions (a table, a ruled list, an inspector) was getting 20px of padding and
+  gap stacked on every region's own, in every app that composed cards that way.
+- `CardHeader` (`p-6`, a flex column), `CardContent` and `CardFooter` (`p-6 pt-0`) pad themselves.
+  `CardTitle` takes the app's `text-heading` type role.
+- Removed: `Card`'s `variant="panel"` (a bare card needs no opt-out), `CardAction`, and the
+  `ui/panel` module; `PanelVariant` and `PANEL_CONTENT_CLASS` live in `ui/dialog` as before 0.4.0.
+- `DataTable` and `SaveBar` set the flex layout they relied on themselves.
+
 ## 0.4.0
 
 - `Card` takes `variant="panel"`: flush (no `py-5`, no `gap-5`), clipping, the same

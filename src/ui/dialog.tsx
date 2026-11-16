@@ -7,11 +7,7 @@ import { useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { Button } from "./button.js";
-import { PANEL_CONTENT_CLASS, type PanelVariant } from "./panel.js";
 import { floatingPanelFadeClass } from "./popover.js";
-
-// Part of `dialog`'s public API since 0.1.0; defined in `panel` so `Card` can read them on the server.
-export { PANEL_CONTENT_CLASS, type PanelVariant };
 
 /**
  * The surface of a modal that is not the centred box (a sheet docked to an edge): scrolls when
@@ -19,6 +15,14 @@ export { PANEL_CONTENT_CLASS, type PanelVariant };
  */
 export const MODAL_SURFACE_CLASS = `z-50 overflow-auto overscroll-contain border bg-background p-6 text-foreground shadow-lg ${floatingPanelFadeClass}`;
 
+/**
+ * `panel` is a work surface rather than a message: flush (no padding or gap), a flex column that
+ * clips, so the body runs its own scroller between a header and a footer ruled off by
+ * `DialogHeader`/`DialogFooter variant="panel"`.
+ */
+export type PanelVariant = "default" | "panel";
+
+export const PANEL_CONTENT_CLASS = "flex flex-col gap-0 overflow-hidden p-0";
 const PANEL_HEADER_CLASS = "shrink-0 border-b border-border py-4 ps-5 pe-12";
 const PANEL_FOOTER_CLASS = "shrink-0 border-t border-border px-5 py-3";
 
