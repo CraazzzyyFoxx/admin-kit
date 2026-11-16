@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1
+
+- `TooltipContent` opens on the shared floating panel (`floatingPanelClass`: `bg-popover`, border,
+  shadow) like every other overlay, instead of shadcn's inverted `bg-foreground`, which painted a
+  white tooltip on a dark theme. The arrow goes with it; `sideOffset` defaults to 4. `IconTooltip`'s
+  hint line moves from `text-background/70` to `text-muted-foreground` to stay readable on the panel.
+
 ## 0.3.0
 
 - Theming: `--admin-*` variables recolour the table (surface, rules, header, row hover and

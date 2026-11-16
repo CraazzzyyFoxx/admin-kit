@@ -60,7 +60,7 @@ export function IconTooltip({
           {hint ? (
             <>
               <div className="font-semibold">{label}</div>
-              <div className="text-background/70">{hint}</div>
+              <div className="text-muted-foreground">{hint}</div>
             </>
           ) : (
             label
