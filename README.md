@@ -24,6 +24,10 @@ Peer dependencies the app already has: `next`, `react`, `react-dom`, `next-intl`
 
 It points Tailwind at the kit's files and adds `text-label` / `text-caption` / `text-body`,
 `shadow-surface` and the `--admin-row-tint` property. The app's `@theme` overrides any of them.
+An app's own type sizes take their names from one vocabulary, `text-label`, `caption`, `body`,
+`ui`, `reading`, `heading`, `title`, `headline`, `display`, `figure`: the kit's `cn` files those
+as font sizes, so a `className="text-ui"` passed to a kit component replaces its size. Any other
+`text-<name>` reads as a colour and replaces the component's text colour instead.
 The kit colours only through Tailwind's theme: shadcn's tokens as `--color-*` (`--color-card`,
 `--color-primary`, …) plus `--color-success`, `--color-warning`, `--color-info` and
 `--color-danger`, in whatever colour format the app uses. It reads them as utilities
@@ -31,7 +35,7 @@ The kit colours only through Tailwind's theme: shadcn's tokens as `--color-*` (`
 `var(--color-*)`: that takes the value computed on `<html>`, so a `.dark` on `<body>` would miss it.
 
 **Theming.** Out of the box the kit wears the shadcn tokens above. An app that wants its own look
-for the table, filters and fields sets `--admin-*` variables; each one left unset keeps the
+for the kit's primitives, table, filters and fields sets `--admin-*` variables; each one left unset keeps the
 default in the table. Any colour format works. Set them on the element that carries the theme
 class (`.dark`), or on `:root` when the theme lives there: a variable resolves where it is
 declared, so `hsl(var(--card))` declared on `:root` reads `:root`'s `--card`.
@@ -54,10 +58,16 @@ declared, so `hsl(var(--card))` declared on `:root` reads `:root`'s `--card`.
 | `--admin-row-selected` | a selected row | `--color-primary` at 8% |
 | `--admin-head-fg` | column heads | `--color-muted-foreground` |
 | `--admin-fg-muted`, `--admin-fg-dim`, `--admin-fg-faint` | the eyebrow's `muted`/`dim`/`faint` tones; footer text (dim); the search icon and an idle chip's count (faint) | `--color-muted-foreground` |
-| `--admin-control-bg`, `--admin-control-border` | `Input` (and the `surface` select/combobox trigger), `Checkbox` | transparent (`--color-input` at 30% under `dark:`), `--color-input` |
+| `--admin-control-bg`, `--admin-control-border` | `Input` (and the `surface` select/combobox trigger), `Checkbox`; the border also rims an `outline` or `dashed` button, a select-like trigger and the floating panel | transparent (`--color-input` at 30% under `dark:`), `--color-input` |
 | `--admin-chip-bg` | an idle filter chip's count | `--color-accent` |
 | `--admin-head-weight`, `--admin-head-case`, `--admin-head-tracking` | column heads' weight, `text-transform`, `letter-spacing` | `500`, `none`, `normal` |
 | `--admin-data-font` | `font-family` of eyebrows, column heads and chip counts | inherited |
+| `--admin-raised`, `--admin-raised-hover` | the raised surface: an `outline` button and a select-like trigger at rest, a ghost button under the pointer, a skeleton; the same under the pointer, and the cursor row of a menu, select or command list | `--color-accent` |
+| `--admin-control-border-hover` | an `outline` button or trigger's border under the pointer and while its panel is open | `--color-input` |
+| `--admin-panel` | the floating panel of popovers, menus, select and combobox lists, tooltips | `--color-popover` |
+| `--admin-separator` | the hairline between a menu's or list's groups | `--color-border` |
+| `--admin-edge` | the 1px light along the top edge of a raised surface (outline button, floating panel, modal) | none |
+| `--admin-sheen` | the same light on a filled button | white at 18% |
 
 The framed table's shadow is `shadow-surface`, shared with `Card`: `--shadow-surface: none` in the
 app's `@theme` flattens both. The same roles exist as utilities (`bg-admin-surface`,
@@ -88,7 +98,7 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
 | --- | --- |
 | `@craazzzyyfoxx/admin-kit/data-table` | `DataTable`, `columnMeta`, `createKebabColumn`, filters, types (and `/data-table/<file>` for the rest) |
 | `@craazzzyyfoxx/admin-kit/kit/<name>` | `ConfirmDialog`, `EntityFormDialog`, `EmptyNote` (`LoadErrorNote`), `ErrorDetails`, `Clipboard`, `FilterBar`, `useFilters`, `ServerSearchCombobox`, `useSearchComboboxQuery`, `useUnsavedGuard`, `SaveBar` (`guardNavigation`, `onDirtyChange`) |
-| `@craazzzyyfoxx/admin-kit/ui/<name>` | The shadcn primitives the kit is built from (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies. `button` also has the `accent`, `positive`, `dashed` and `ghost-destructive` variants and the `inline`, `label` and `icon-toolbar` sizes; `card` is a bare surface (its header, content and footer pad themselves; the title uses the app's `text-heading`), and it and its title take `asChild`; `table` a `wrapperClassName`; `popover` `animate` and `PopoverClose`; `select`/`combobox` a `variant` (`surface`); `input` a `size` and `controlSurfaceClass`; `dialog` a `panel` variant plus `MODAL_SURFACE_CLASS`, `PANEL_CONTENT_CLASS` and `ModalCloseButton` for a sheet; `skeleton` a `text` variant. |
+| `@craazzzyyfoxx/admin-kit/ui/<name>` | The primitives the kit is built from, on shadcn's API (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies, and themes them through `--admin-*`. `button` also has the `accent`, `positive`, `dashed` and `ghost-destructive` variants and the `inline`, `label` and `icon-toolbar` sizes; a disabled button keeps its pointer events, so a tooltip can say why; `card` is a bare surface (its header, content and footer pad themselves; the title uses the app's `text-heading`), and it and its title take `asChild`; `table` a `wrapperClassName`; `popover` `animate` and `PopoverClose`; `select`/`combobox` a `variant` (`surface`); `input` a `size` and `controlSurfaceClass`; `dialog` a `panel` variant plus `MODAL_SURFACE_CLASS`, `PANEL_CONTENT_CLASS` and `ModalCloseButton` for a sheet; `skeleton` a `text` variant; `spinner` a `label` that announces it (decorative without one); `tooltip` `TOOLTIP_DELAY`. |
 | `@craazzzyyfoxx/admin-kit/provider` | `AdminKitProvider`, `useDescribeError` |
 | `@craazzzyyfoxx/admin-kit/messages` | `en`, `ru` |
 | `@craazzzyyfoxx/admin-kit/styles.css` | See Setup |

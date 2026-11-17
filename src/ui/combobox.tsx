@@ -170,7 +170,7 @@ export function Combobox(props: Readonly<ComboboxProps>) {
       >
         <Command
           shouldFilter={shouldFilter}
-          // Rows take the trigger's text, like `SelectItem` (DESIGN §3, Control text).
+          // Rows take the trigger's text, like `SelectItem`.
           className={
             props.trigger === undefined && props.size === "sm"
               ? "[&_[cmdk-item]]:text-caption"
@@ -192,7 +192,7 @@ export function Combobox(props: Readonly<ComboboxProps>) {
                   <CommandItem
                     value={clear.value}
                     onSelect={clear.onSelect}
-                    className="text-[color:--theme(--color-muted-foreground)]"
+                    className="text-admin-muted"
                   >
                     <span className="min-w-0 flex-1 truncate">{clear.label}</span>
                     <ComboboxCheck selected={clear.selected ?? empty} />
@@ -215,7 +215,7 @@ export function ComboboxCheck({ selected }: Readonly<{ selected: boolean }>) {
     <Check
       aria-hidden
       className={cn(
-        "h-4 w-4 shrink-0 text-[color:--theme(--color-primary)]",
+        "h-4 w-4 shrink-0 text-primary",
         selected ? "opacity-100" : "opacity-0"
       )}
     />
@@ -229,10 +229,7 @@ export function ComboboxMeta({
 }: Readonly<{ className?: string; children: ReactNode }>) {
   return (
     <span
-      className={cn(
-        "shrink-0 text-caption tabular-nums text-[color:--theme(--color-muted-foreground)]",
-        className
-      )}
+      className={cn("shrink-0 text-caption tabular-nums text-admin-dim", className)}
     >
       {children}
     </span>

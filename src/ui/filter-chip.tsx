@@ -13,10 +13,10 @@ export interface FilterChipProps
   active?: boolean;
   /** Optional trailing count (e.g. how many rows match this filter). */
   count?: number | string | null;
-  /** Optional leading dot colour, set as an inline style: a CSS colour such as the app's `var(--destructive)`. */
+  /** Optional leading dot colour, set as an inline style: a CSS colour such as `var(--color-danger)` for "live". */
   dotColor?: string;
   /**
-   * Colour of the active state, replacing teal: a CSS colour or token such as
+   * Colour of the active state, replacing primary: a CSS colour or token such as
    * a role's tint (`var(--role-tank)`, `hsl(…)`). The chip derives its fill,
    * border and text from it, so a set of role filters reads as their roles.
    */
@@ -31,13 +31,13 @@ const CHIP_CLASS =
   "inline-flex h-8 shrink-0 cursor-pointer items-center gap-2 rounded-lg px-3 text-caption font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50";
 
 /**
- * The single filter chip for the whole site: a real `<button>` with
+ * The single filter chip: a real `<button>` with
  * `aria-pressed`, so Enter/Space work and assistive technology reads which
  * filter is on.
  *
  * At rest it wears the outline button's surface (`outlineSurfaceClass`): a chip
  * is pressed, so it sits raised beside the buttons and select triggers of its
- * row, not sunk like the search field. On, it takes the tone tint over teal or
+ * row, not sunk like the search field. On, it takes the tone tint over primary or
  * `accent`. `data-slot` is the hook a page-scoped stylesheet sizes it by.
  */
 export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
@@ -53,7 +53,7 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
           ? cn("border", TONE_TINT, accent ? undefined : TONE_HUE.accent)
           : cn(
               outlineSurfaceClass,
-              "disabled:hover:border-[color:--theme(--color-border)] disabled:hover:bg-[color:--theme(--color-accent)]"
+              "disabled:hover:border-admin-control disabled:hover:bg-admin-raised"
             ),
         className
       )}

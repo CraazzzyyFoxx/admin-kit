@@ -73,6 +73,10 @@ export const ru: typeof en = {
       "clearAll": "Сбросить всё",
       "activeFilters": "Активные фильтры"
     },
+    "commandPalette": {
+      "title": "Палитра команд",
+      "description": "Найдите команду для запуска…"
+    },
     "infiniteScroll": {
       "rows": "строк",
       "progress": "Показано {loaded, number} {unit}",

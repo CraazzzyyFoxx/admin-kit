@@ -72,6 +72,10 @@ export const en = {
       "clearAll": "Clear all",
       "activeFilters": "Active filters"
     },
+    "commandPalette": {
+      "title": "Command palette",
+      "description": "Search for a command to run…"
+    },
     "infiniteScroll": {
       "rows": "rows",
       "progress": "Showing {loaded, number} {unit}",

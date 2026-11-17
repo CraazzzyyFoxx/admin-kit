@@ -10,10 +10,22 @@ import { Button } from "./button.js";
 import { floatingPanelFadeClass } from "./popover.js";
 
 /**
- * The surface of a modal that is not the centred box (a sheet docked to an edge): scrolls when
- * taller than the viewport, fades like every modal.
+ * One modal chrome for `Dialog`, `AlertDialog` and a sheet: the page colour as the scrim; the card
+ * fill, a hairline rim and the 1px lit top edge as the surface, no drop shadow. Both fade in and
+ * out in ~150ms (the floating panel's fade): no zoom, no slide.
+ *
+ * `overflow-auto` (not `overflow-y-auto`) so a modal taller than the viewport scrolls instead of
+ * running off its edges. It shares tailwind-merge's `overflow` group, so the surfaces that manage
+ * their own scrolling (`overflow-hidden` + an inner scroller) still override it.
  */
-export const MODAL_SURFACE_CLASS = `z-50 overflow-auto overscroll-contain border bg-background p-6 text-foreground shadow-lg ${floatingPanelFadeClass}`;
+export const MODAL_OVERLAY_CLASS = `fixed inset-0 z-50 bg-background/80 ${floatingPanelFadeClass}`;
+/** The surface of a modal that is not the centred box (a sheet docked to an edge); the caller adds the border sides. */
+export const MODAL_SURFACE_CLASS = `z-50 overflow-auto overscroll-contain border-border bg-card p-6 text-foreground shadow-[inset_0_1px_0_var(--admin-edge,transparent)] ${floatingPanelFadeClass}`;
+/** The centred box: 12px radius, a 1rem margin from every viewport edge. */
+export const MODAL_CONTENT_CLASS = `fixed left-1/2 top-1/2 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border ${MODAL_SURFACE_CLASS}`;
+export const MODAL_HEADER_CLASS = "flex flex-col space-y-1.5 text-start";
+export const MODAL_TITLE_CLASS = "text-heading font-semibold";
+export const MODAL_DESCRIPTION_CLASS = "text-body text-muted-foreground";
 
 /**
  * `panel` is a work surface rather than a message: flush (no padding or gap), a flex column that
@@ -27,8 +39,9 @@ const PANEL_HEADER_CLASS = "shrink-0 border-b border-border py-4 ps-5 pe-12";
 const PANEL_FOOTER_CLASS = "shrink-0 border-t border-border px-5 py-3";
 
 /**
- * A quiet icon close button in the top-trailing corner, centred on the title's first line. A
- * `panel` sits closer to the corner. `DialogContent` mounts it for `panel`; a sheet mounts it too.
+ * The one close control of a modal: a quiet 28px icon button in the top-trailing corner, centred
+ * on the title's first line; `DialogHeader` keeps clear of it. A `panel` sits closer to the
+ * corner. A sheet mounts the same one.
  */
 export function ModalCloseButton({ variant }: { variant: PanelVariant }) {
   const t = useTranslations("adminKit.common");
@@ -70,10 +83,7 @@ function DialogOverlay({
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
-        className
-      )}
+      className={cn(MODAL_OVERLAY_CLASS, className)}
       {...props}
     />
   );
@@ -89,35 +99,22 @@ function DialogContent({
   showCloseButton?: boolean;
   variant?: PanelVariant;
 }) {
-  const t = useTranslations("adminKit.common");
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
-        className={cn(
-          "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 sm:max-w-lg",
-          variant === "panel" && PANEL_CONTENT_CLASS,
-          className
-        )}
+        className={cn(MODAL_CONTENT_CLASS, variant === "panel" && PANEL_CONTENT_CLASS, className)}
         {...props}
       >
         {children}
-        {showCloseButton && variant === "panel" && <ModalCloseButton variant={variant} />}
-        {showCloseButton && variant !== "panel" && (
-          <DialogPrimitive.Close
-            data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4"
-          >
-            <XIcon />
-            <span className="sr-only">{t("close")}</span>
-          </DialogPrimitive.Close>
-        )}
+        {showCloseButton && <ModalCloseButton variant={variant} />}
       </DialogPrimitive.Content>
     </DialogPortal>
   );
 }
 
+/** The sheet header too; `pe-*` keeps clear of the close button (`AlertDialog` has none). */
 function DialogHeader({
   className,
   variant = "default",
@@ -126,16 +123,13 @@ function DialogHeader({
   return (
     <div
       data-slot="dialog-header"
-      className={cn(
-        "flex flex-col gap-2 text-center sm:text-left",
-        variant === "panel" && PANEL_HEADER_CLASS,
-        className
-      )}
+      className={cn(MODAL_HEADER_CLASS, variant === "panel" ? PANEL_HEADER_CLASS : "pe-7", className)}
       {...props}
     />
   );
 }
 
+/** The `AlertDialog` and sheet footer too: actions stacked (primary on top) on a phone, a trailing row from `sm`. */
 function DialogFooter({
   className,
   showCloseButton = false,
@@ -171,7 +165,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn(MODAL_TITLE_CLASS, className)}
       {...props}
     />
   );
@@ -184,7 +178,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(MODAL_DESCRIPTION_CLASS, className)}
       {...props}
     />
   );

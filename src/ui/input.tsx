@@ -2,19 +2,28 @@ import * as React from "react";
 import { cn } from "../lib/utils.js";
 
 /**
- * The surface every text field wears: the field's border, fill, placeholder, focus ring and
- * `aria-invalid` border, without a height or font size. `Input` and `Textarea`-like fields start
- * from it; `selectTriggerClass`'s `surface` variant does too, so a picker beside an input matches.
+ * The control surface every text field wears: 8px radius, the control fill and hairline, a
+ * dimmed placeholder, the 2px offset focus ring, and a red border (only the border) once the
+ * control is `aria-invalid`. Exported for a trigger that wears the same skin — set `aria-invalid`
+ * on it for the error state. `selectTriggerClass`'s `surface` variant does, so a picker beside an
+ * input matches.
  */
 export const controlSurfaceClass =
-  "w-full min-w-0 rounded-md border border-admin-control bg-admin-control px-3 shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40";
+  "w-full rounded-lg border border-admin-control bg-admin-control px-3 " +
+  "text-foreground placeholder:text-admin-dim transition-colors " +
+  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
+  "focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive";
 
+// Below `sm` every field stays at 16px: iOS Safari zooms the page on focus into anything
+// smaller. The field grows to 40px there, so 16px text sits in it in proportion instead of
+// filling a 32px box.
 const INPUT_SIZE = {
-  /** The 32px toolbar row. */
-  sm: "h-8 md:text-caption",
-  default: "h-9 md:text-sm",
+  /** The 32px toolbar row (13px text). */
+  sm: "h-10 sm:h-8 sm:text-caption",
+  /** The 36px form row. */
+  default: "h-10 sm:h-9 sm:text-sm",
   /** The 40px row. */
-  lg: "h-10 md:text-sm"
+  lg: "h-10 sm:text-sm"
 } as const;
 
 function Input({
@@ -22,17 +31,15 @@ function Input({
   type,
   size = "default",
   ...props
-}: Omit<React.ComponentProps<"input">, "size"> & { size?: keyof typeof INPUT_SIZE }) {
+}: Omit<React.ComponentProps<"input">, "size"> & {
+  /** `sm` is the 32px toolbar row (13px text), `default` the 36px form row, `lg` the 40px one (14px). Below `sm` all are 40px. */
+  size?: keyof typeof INPUT_SIZE;
+}) {
   return (
     <input
       type={type}
       data-slot="input"
-      className={cn(
-        controlSurfaceClass,
-        "py-1 text-base file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground disabled:pointer-events-none",
-        INPUT_SIZE[size],
-        className
-      )}
+      className={cn(controlSurfaceClass, "flex py-1 text-base", INPUT_SIZE[size], className)}
       {...props}
     />
   );

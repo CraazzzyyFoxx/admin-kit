@@ -76,3 +76,27 @@
 @utility bg-admin-chip {
   background-color: var(--admin-chip-bg, --theme(--color-accent));
 }
+/* The raised surface the controls share: an outline button and a select-like trigger at rest, a
+   ghost button under the pointer, a skeleton. `-hover` is the same surface under the pointer and a
+   menu or list row under the cursor. */
+@utility bg-admin-raised {
+  background-color: var(--admin-raised, --theme(--color-accent));
+}
+@utility bg-admin-raised-hover {
+  background-color: var(--admin-raised-hover, --theme(--color-accent));
+}
+/* A raised control's border under the pointer and while the panel it opens is open. */
+@utility border-admin-control-hover {
+  border-color: var(--admin-control-border-hover, --theme(--color-input));
+}
+/* The floating panel every overlay opens on: popovers, menus, select and combobox lists, tooltips. */
+@utility bg-admin-panel {
+  background-color: var(--admin-panel, --theme(--color-popover));
+}
+/* The hairline between a menu's or list's groups. */
+@utility bg-admin-separator {
+  background-color: var(--admin-separator, --theme(--color-border));
+}
+@utility border-admin-separator {
+  border-color: var(--admin-separator, --theme(--color-border));
+}

@@ -16,7 +16,7 @@ function Skeleton({
     <Comp
       data-slot="skeleton"
       className={cn(
-        "animate-pulse rounded-md bg-accent motion-reduce:animate-none",
+        "animate-pulse rounded-md bg-admin-raised motion-reduce:animate-none",
         variant === "text" && "inline-block h-[0.8em] align-middle",
         className
       )}

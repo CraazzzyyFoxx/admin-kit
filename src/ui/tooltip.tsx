@@ -5,8 +5,11 @@ import { cn } from "../lib/utils.js";
 import { floatingPanelClass } from "./popover.js";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
 
+/** How long the pointer rests before a tooltip opens, the same on every page. */
+export const TOOLTIP_DELAY = 150;
+
 function TooltipProvider({
-  delayDuration = 0,
+  delayDuration = TOOLTIP_DELAY,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return (
@@ -38,8 +41,9 @@ function TooltipContent({
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) px-3 py-1.5 text-caption text-balance animate-in fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+          "z-50 max-w-xs overflow-hidden px-3 py-1.5 text-caption text-balance animate-in fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
           floatingPanelClass,
+          "rounded-md",
           className
         )}
         {...props}

@@ -12,17 +12,28 @@ function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimiti
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
-/** The floating panel every overlay shares: select and combobox lists, menus, popovers. */
+/**
+ * The floating panel every overlay shares: select and combobox lists, menus,
+ * popovers and (at a smaller radius) tooltips. Raised off whatever it opens
+ * over, like an `outline` button: the `panel` fill is lighter than a page, a
+ * card or a dialog, with the control border and a 1px light along its top
+ * edge. No drop shadow.
+ */
 export const floatingPanelClass =
-  "rounded-md border bg-popover text-popover-foreground shadow-md";
+  "rounded-[10px] border border-admin-control bg-admin-panel text-foreground shadow-[inset_0_1px_0_var(--admin-edge,transparent)]";
 
 /** The panel's only motion: a fade in and out on Radix's `data-state`. */
 export const floatingPanelFadeClass =
   "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0";
 
-/** A row of a floating panel: 32px under a mouse, 44px under a finger. Each primitive adds its own cursor fill. */
+/**
+ * A row of a floating panel: every select and combobox option and every menu
+ * item. 32px under a mouse, 44px under a finger (`pointer-coarse`), 6px radius.
+ * Each primitive adds its own cursor fill and disabled state: Radix and cmdk
+ * mark them with different attributes.
+ */
 export const floatingRowClass =
-  "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden pointer-coarse:min-h-11";
+  "relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden pointer-coarse:min-h-11";
 
 function PopoverContent({
   className,
@@ -42,8 +53,19 @@ function PopoverContent({
         data-slot="popover-content"
         align={align}
         sideOffset={sideOffset}
-        // A modal Dialog's scroll lock swallows wheel/touch from anything portalled outside it,
-        // so a scrollable popover opened from a dialog would never scroll. Keep the events here.
+        // Keep wheel/touch inside the popover, or a scrollable body of one opened
+        // from a modal Dialog cannot scroll at all.
+        //
+        // Radix Dialog wraps its content in react-remove-scroll, which registers a
+        // NON-capture `wheel`/`touchmove` listener on `document`. That listener
+        // preventDefaults any event it cannot attribute to the locked subtree or to
+        // a declared shard, and this content is portalled to `document.body`, so
+        // it is neither. The default scroll action runs only after dispatch
+        // finishes, so the list never moves even though it overflows.
+        //
+        // Radix Select/DropdownMenu are unaffected: each is modal in its own right
+        // and installs its own lock, which registers its content. Popover is not,
+        // so it has to keep the event away from `document` itself.
         onWheelCapture={(event) => {
           onWheelCapture?.(event);
           event.stopPropagation();
@@ -53,7 +75,7 @@ function PopoverContent({
           event.stopPropagation();
         }}
         className={cn(
-          "z-50 w-72 origin-(--radix-popover-content-transform-origin) p-4 outline-hidden",
+          "z-50 w-72 p-4 outline-hidden",
           floatingPanelClass,
           animate && floatingPanelFadeClass,
           className
@@ -90,7 +112,7 @@ function PopoverDescription({ className, ...props }: React.ComponentProps<"p">) 
   return (
     <p
       data-slot="popover-description"
-      className={cn("text-muted-foreground", className)}
+      className={cn("text-admin-muted", className)}
       {...props}
     />
   );

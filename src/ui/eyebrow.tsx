@@ -4,10 +4,10 @@ import { cn } from "../lib/utils.js";
 
 /**
  * The eyebrow: the small uppercase label above a value, a column or a section
- * (design book `.eyebrow`) — label voice, `text-label`, semibold, `tracking-label`.
+ * — label voice, `text-label`, semibold, `tracking-label`.
  *
- * `tone` picks the text step and nothing else: `faint` is the DESIGN §2 label
- * floor, `dim` the meta step, `muted` the admin surfaces' label.
+ * `tone` picks the text step and nothing else: `faint` is the label floor,
+ * `dim` the meta step, `muted` the admin surfaces' label.
  */
 export type EyebrowTone = "faint" | "dim" | "muted";
 

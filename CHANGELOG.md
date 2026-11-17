@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.6.0
+
+Breaking: the primitives keep the geometry and behaviour of the app they were extracted from, and
+take their colours from `--admin-*` roles. An app that imported them as stock shadcn sees them change.
+
+- Why: the primitives were stock shadcn with the variant and size NAMES an app's code calls, but
+  shadcn's VALUES. Every call site compiled and silently changed look: `size="icon-xs"` went from a
+  20px box with a 14px glyph to 24px with 12px, an `outline` button lost its raised surface, menus
+  gained a drop shadow, dialogs a black scrim.
+- `button`: `rounded-lg`, a 2px offset focus ring, semibold filled variants with a top sheen that
+  brighten under the pointer, the raised `outline` surface. A disabled button keeps its pointer
+  events (a tooltip can still say why); each variant resets its own hover instead. `sm` is 13px,
+  `icon-sm` 28px with a 14px glyph, `icon-xs` 20px with a 14px glyph, `xs` and `icon-xs` take the
+  label size.
+- An unsized icon inside a control is sized by `[&_:where(svg:not([class*=size-]))]` (specificity
+  0,1,0): an icon's own `size-*` keeps its size, and a caller's `[&_svg]:size-5` now wins.
+- `input`: `rounded-lg`, 40px below `sm`. `select`: the trigger's `size` reaches the list rows.
+  `checkbox`: indeterminate draws a dash. `skeleton`: the raised fill. `table`: cells in
+  `text-caption`, heads in the eyebrow voice, wrapping allowed.
+- Overlays (`popover`, menus, select and combobox lists, `tooltip`): one floating panel, 10px radius,
+  the control border, a 1px top light, no drop shadow. `tooltip` opens after `TOOLTIP_DELAY`
+  (150ms) instead of at once. Menu labels speak in the eyebrow voice; radio items show a check.
+- `dialog`/`alert-dialog`: the page colour at 80% as the scrim, the card fill, no drop shadow, fade
+  only; a 28px close button; titles `text-heading`, descriptions `text-body`.
+  `MODAL_SURFACE_CLASS` no longer sets a border width, so a sheet's one-sided border stays one-sided;
+  `MODAL_OVERLAY_CLASS`, `MODAL_CONTENT_CLASS`, `MODAL_HEADER_CLASS`, `MODAL_TITLE_CLASS` and
+  `MODAL_DESCRIPTION_CLASS` are exported.
+- `spinner` is decorative unless given a `label`, which renders a `role="status"` with that text. A
+  bare `<Spinner />` used to announce "Loading": pass `label` where it is the only loading cue.
+- `CommandDialog`'s default title and description come from the kit's messages
+  (`adminKit.commandPalette`).
+- `tone` and `status-dot` paint danger in `--color-danger`, not `--color-destructive`.
+- New theme roles, each with a shadcn default (README "Theming"): `--admin-raised`,
+  `--admin-raised-hover`, `--admin-control-border-hover`, `--admin-panel`, `--admin-separator`,
+  `--admin-edge`, `--admin-sheen`.
+- `cn` knows the whole type-role vocabulary (`text-ui`, `reading`, `headline`, `display`,
+  `figure` joined `label` … `title`). An app's `text-ui` used to read as a text colour: it deleted a
+  button's `text-primary-foreground` and kept its `text-sm` beside it.
+
 ## 0.5.0
 
 Breaking: `Card` is a bare surface again.

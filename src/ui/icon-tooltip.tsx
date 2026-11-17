@@ -30,7 +30,8 @@ interface IconTooltipProps {
  * pointer-only tooltip never shows to. For a `control` the button names
  * itself; the plain wrapper is still the trigger, so a disabled button (which
  * swallows no pointer events) explains itself too, and focus on the button
- * bubbles up to open it.
+ * bubbles up to open it. Brings its own provider, so it works on any page,
+ * not only under the admin shell's.
  */
 export function IconTooltip({
   label,
@@ -60,7 +61,7 @@ export function IconTooltip({
           {hint ? (
             <>
               <div className="font-semibold">{label}</div>
-              <div className="text-muted-foreground">{hint}</div>
+              <div className="text-admin-muted">{hint}</div>
             </>
           ) : (
             label

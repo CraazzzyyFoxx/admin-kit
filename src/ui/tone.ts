@@ -1,9 +1,11 @@
 /**
- * Tone vocabulary for tinted status surfaces, on the shadcn theme tokens.
+ * Tone vocabulary for tinted status surfaces, on the kit's theme roles.
  *
- * One tint for every chip, alert and "chosen" state: a 32% rim and a 12% wash
- * of `--tone-hue`, the text in the hue itself. Index these maps instead of
- * re-typing the classes.
+ * One tint for every chip, alert, toast and "chosen" state: a 32% rim and a 12% wash of
+ * `--tone-hue`, the text in the hue itself (Button `accent` is the same mix over primary).
+ * `neutral` is the same mix over `--admin-fg-muted`, so it still reads on a card. Index these maps
+ * instead of re-typing the classes; the `success`/`warning`/`info`/`danger` colours point at the
+ * same hues.
  */
 export type Tone = "neutral" | "accent" | "success" | "warning" | "info" | "danger";
 
@@ -13,12 +15,12 @@ export const TONE_TINT =
 
 /** `--tone-hue` per tone, for a surface that spends the hue its own way (a toast's rim and icon, an active tab's count). */
 export const TONE_HUE: Record<Tone, string> = {
-  neutral: "[--tone-hue:--theme(--color-muted-foreground)]",
+  neutral: "[--tone-hue:var(--admin-fg-muted,--theme(--color-muted-foreground))]",
   accent: "[--tone-hue:--theme(--color-primary)]",
   success: "[--tone-hue:--theme(--color-success)]",
   warning: "[--tone-hue:--theme(--color-warning)]",
   info: "[--tone-hue:--theme(--color-info)]",
-  danger: "[--tone-hue:--theme(--color-destructive)]"
+  danger: "[--tone-hue:--theme(--color-danger)]"
 };
 
 /** Tinted surface: border colour + wash + readable text. The caller adds `border`. */
@@ -33,10 +35,10 @@ export const TONE_CLASS: Record<Tone, string> = {
 
 /** Text-only tone, for icons and inline labels on an untinted surface. */
 export const TONE_TEXT: Record<Tone, string> = {
-  neutral: "text-[color:--theme(--color-muted-foreground)]",
+  neutral: "text-admin-muted",
   accent: "text-[color:--theme(--color-primary)]",
   success: "text-[color:--theme(--color-success)]",
   warning: "text-[color:--theme(--color-warning)]",
   info: "text-[color:--theme(--color-info)]",
-  danger: "text-[color:--theme(--color-destructive)]"
+  danger: "text-[color:--theme(--color-danger)]"
 };
