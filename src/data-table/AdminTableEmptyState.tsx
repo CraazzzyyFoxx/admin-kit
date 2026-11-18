@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
 import { Button } from "../ui/button.js";
 

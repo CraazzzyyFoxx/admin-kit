@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "../lib/utils.js";
 import { XIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { Button } from "./button.js";

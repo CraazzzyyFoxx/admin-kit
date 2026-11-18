@@ -7,8 +7,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithProviders } from "../../test/render.js";
 import { DataTable } from "./DataTable.js";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/rows" }));
-
 interface Row {
   id: number;
   name: string;

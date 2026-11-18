@@ -17,10 +17,6 @@ declare global {
 }
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-vi.mock("next/navigation", () => ({
-  usePathname: () => "/admin/__column-width-test"
-}));
-
 interface Row {
   id: number;
   when: string;

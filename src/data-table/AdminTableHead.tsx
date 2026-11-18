@@ -5,7 +5,7 @@ import type { MouseEvent, Ref, ThHTMLAttributes, TouchEvent } from "react";
 import { flushSync } from "react-dom";
 
 import { TableHead } from "../ui/table.js";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { cn } from "../lib/utils.js";
 
 export type AdminTableHeadProps<TData> = {

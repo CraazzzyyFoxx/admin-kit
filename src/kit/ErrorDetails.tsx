@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
 import { useDescribeError } from "../provider.js";
 import { CopyButton } from "./Clipboard.js";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import type { Row, SortingState, Table } from "@tanstack/react-table";
 
 import { TableHead, TableHeader, TableRow } from "../ui/table.js";

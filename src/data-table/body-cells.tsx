@@ -137,7 +137,7 @@ export function renderBodyCell<TData>(
         "text-caption",
         cellPadding,
         (columnMeta.valign ?? cellAlign) === "top" ? "align-top" : "align-middle",
-        isFirstColumn && "pl-4 text-muted-foreground",
+        isFirstColumn && "pl-4 text-admin-lead",
         isLastColumn && "pr-4",
         layout.edgePadding(cell.column.id),
         (isActionColumn || columnMeta.nowrap) && "whitespace-nowrap",

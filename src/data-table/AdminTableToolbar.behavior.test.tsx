@@ -13,7 +13,7 @@
 //    on the columns level; the sort level (cards' only way to sort) keeps
 //    the direction across a column change and the column across a direction
 //    change, staying open between the two.
-import { NextIntlClientProvider } from "next-intl";
+import { IntlProvider } from "use-intl";
 import { Plus } from "lucide-react";
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
@@ -94,7 +94,7 @@ async function render(props: Partial<AdminTableToolbarProps> = {}) {
   root = createRoot(container);
   await act(async () => {
     root.render(
-      <NextIntlClientProvider locale="en" messages={en}>
+      <IntlProvider locale="en" messages={en}>
         <AdminTableToolbar
           narrow={false}
           showSearch
@@ -120,7 +120,7 @@ async function render(props: Partial<AdminTableToolbarProps> = {}) {
           }}
           {...props}
         />
-      </NextIntlClientProvider>
+      </IntlProvider>
     );
   });
 }

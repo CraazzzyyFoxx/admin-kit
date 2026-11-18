@@ -4,7 +4,7 @@ import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "../lib/utils.js";
 import { SearchIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
 import {
   Dialog,

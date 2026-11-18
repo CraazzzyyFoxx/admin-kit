@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { AlertCircle } from "lucide-react";
 
 import { ErrorDetails } from "./ErrorDetails.js";

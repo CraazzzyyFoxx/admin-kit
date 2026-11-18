@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { AlertTriangle } from "lucide-react";
 
 import {

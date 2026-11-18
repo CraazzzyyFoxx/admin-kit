@@ -49,6 +49,10 @@
 @utility text-admin-head {
   color: var(--admin-head-fg, --theme(--color-muted-foreground));
 }
+/* A body row's first cell: an id column reads quieter than the data beside it. */
+@utility text-admin-lead {
+  color: var(--admin-lead-fg, --theme(--color-muted-foreground));
+}
 /* A column head's voice beyond its colour, one utility per property so `cn` (lib/utils.ts) can
    replace `font-medium` and the like with them. */
 @utility font-admin-head {

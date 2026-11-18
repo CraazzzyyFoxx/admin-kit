@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { render, type RenderOptions, type RenderResult } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { NextIntlClientProvider } from "next-intl";
+import { IntlProvider } from "use-intl";
 
 import { en } from "../src/messages/index.js";
 
@@ -24,9 +24,9 @@ export const renderWithProviders = (
     ...renderOptions,
     wrapper: ({ children }) => (
       <QueryClientProvider client={queryClient}>
-        <NextIntlClientProvider locale="en" messages={en}>
+        <IntlProvider locale="en" messages={en}>
           {children}
-        </NextIntlClientProvider>
+        </IntlProvider>
       </QueryClientProvider>
     )
   });

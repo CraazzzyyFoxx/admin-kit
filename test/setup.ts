@@ -3,17 +3,17 @@ import { cleanup } from "@testing-library/react";
 import { act, createElement, type ComponentProps } from "react";
 import type * as ReactDomClient from "react-dom/client";
 import type { Root } from "react-dom/client";
-import type * as NextIntl from "next-intl";
+import type * as UseIntl from "use-intl";
 import { afterEach, vi } from "vitest";
 
 import { en } from "../src/messages/index.js";
 
 // Outside a provider `useTranslations` falls back to the kit's English messages instead of
 // throwing, so a suite can render a component bare; inside one (or under a file's own
-// `vi.mock("next-intl")`) nothing changes. One translator per namespace: a fresh function every
+// `vi.mock("use-intl")`) nothing changes. One translator per namespace: a fresh function every
 // render would change the identity of `t` and re-fire every effect and memo that depends on it.
-vi.mock("next-intl", async (importOriginal) => {
-  const actual = await importOriginal<typeof NextIntl>();
+vi.mock("use-intl", async (importOriginal) => {
+  const actual = await importOriginal<typeof UseIntl>();
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const fallbacks = new Map<string, ReturnType<typeof actual.createTranslator>>();
   const fallback = (namespace?: string) => {
@@ -32,8 +32,8 @@ vi.mock("next-intl", async (importOriginal) => {
   };
   return {
     ...actual,
-    NextIntlClientProvider: (props: ComponentProps<typeof actual.NextIntlClientProvider>) =>
-      createElement(actual.NextIntlClientProvider, { timeZone, ...props }),
+    IntlProvider: (props: ComponentProps<typeof actual.IntlProvider>) =>
+      createElement(actual.IntlProvider, { timeZone, ...props }),
     useTranslations: ((namespace?: string) => {
       try {
         return actual.useTranslations(namespace as never);

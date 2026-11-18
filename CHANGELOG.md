@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.7.0
+
+Breaking: only `/next` imports Next. A Next app passes its router and next-intl through the
+provider: `<AdminKitProvider adapter={nextAdapter}>` with `nextAdapter` from
+`@craazzzyyfoxx/admin-kit/next`; its test setup makes `nextAdapter` the default (see README, Vitest).
+
+- Why: the kit ran only under Next (`next/navigation`, `next/link`, `next-intl`), so a Vite app
+  could not use it without stubbing Next.
+- `AdminKitProvider` takes `adapter` (`usePathname`, `useSearchParams`, `useRouter`, `Link`,
+  `useTranslations`). Without it the kit uses `browserAdapter`: the History API, announcing each
+  change as `popstate`, a plain `<a>` and use-intl's `useTranslations`.
+- Peers: `use-intl` (next-intl brings it); `next` and `next-intl` are optional, for `/next`.
+- `DataTable` takes `urlState`: a string puts its params under `<prefix>.`, so two tables on one
+  screen keep apart; `false` keeps its state out of the URL and hides saved views.
+- `DataTable` takes `fillViewport={false}` for a table that is one section of a page: as tall as
+  its rows, no "Auto" page size, no filling of the viewport under `paging="all"`/`"infinite"`.
+- `--admin-lead-fg` paints a body row's first cell, muted as before: an app whose first column is
+  the row's name sets it to its foreground.
+
 ## 0.6.1
 
 - `DataTable` with `paging="all"` or `"infinite"` fills the viewport on desktop like an Auto-paged

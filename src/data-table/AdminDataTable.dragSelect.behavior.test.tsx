@@ -18,10 +18,6 @@ declare global {
 }
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-vi.mock("next/navigation", () => ({
-  usePathname: () => "/admin/matches"
-}));
-
 interface Row {
   id: number;
   status: string;

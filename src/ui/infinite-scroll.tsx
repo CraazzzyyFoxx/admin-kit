@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef, type ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
 import { Button } from "./button.js";
 import { cn } from "../lib/utils.js";

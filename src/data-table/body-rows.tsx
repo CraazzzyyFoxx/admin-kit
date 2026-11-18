@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import type { Row } from "@tanstack/react-table";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { VirtualItem } from "@tanstack/react-virtual";

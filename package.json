@@ -1,7 +1,7 @@
 {
   "name": "@craazzzyyfoxx/admin-kit",
-  "version": "0.6.1",
-  "description": "Admin list table, pagination and form kit for Next.js apps on shadcn/ui and Tailwind 4",
+  "version": "0.7.0",
+  "description": "Admin list table, pagination and form kit for React apps (Next.js or plain) on shadcn/ui and Tailwind 4",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -35,6 +35,10 @@
       "types": "./dist/provider.d.ts",
       "default": "./dist/provider.js"
     },
+    "./next": {
+      "types": "./dist/next.d.ts",
+      "default": "./dist/next.js"
+    },
     "./messages": {
       "types": "./dist/messages/index.d.ts",
       "default": "./dist/messages/index.js"
@@ -57,7 +61,16 @@
     "radix-ui": "^1.8.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "sonner": "^2.0.0"
+    "sonner": "^2.0.0",
+    "use-intl": "^4.13.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "next-intl": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -82,12 +95,13 @@
     "happy-dom": "^21.0.4",
     "lucide-react": "^1.65.0",
     "next": "^16.4.3",
-    "next-intl": "^4.14.9",
+    "next-intl": "^4.15.1",
     "radix-ui": "^1.8.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "sonner": "^2.0.8",
     "typescript": "^5.9.3",
+    "use-intl": "^4.15.1",
     "vitest": "^4.1.2"
   }
 }

@@ -1,9 +1,9 @@
 # @craazzzyyfoxx/admin-kit
 
 The admin list table, its pagination and the form kit shared by
-[dudeduck](https://github.com/CraazzzyyFoxx/dudeduck) and
-[overwatch-tournaments](https://github.com/CraazzzyyFoxx/overwatch-tournaments): Next.js 16,
-React 19, Tailwind 4, shadcn/ui (`new-york`), next-intl 4.
+[dudeduck](https://github.com/CraazzzyyFoxx/dudeduck),
+[overwatch-tournaments](https://github.com/CraazzzyyFoxx/overwatch-tournaments) (Next.js 16) and
+pm-document-rag (Vite): React 19, Tailwind 4, shadcn/ui (`new-york`), use-intl 4.
 
 ## Setup
 
@@ -11,8 +11,9 @@ React 19, Tailwind 4, shadcn/ui (`new-york`), next-intl 4.
 npm i @craazzzyyfoxx/admin-kit
 ```
 
-Peer dependencies the app already has: `next`, `react`, `react-dom`, `next-intl`,
-`@tanstack/react-query`, `@tanstack/react-table`, `radix-ui`, `lucide-react`, `sonner`.
+Peer dependencies the app already has: `react`, `react-dom`, `use-intl` (next-intl brings it),
+`@tanstack/react-query`, `@tanstack/react-table`, `radix-ui`, `lucide-react`, `sonner`; `next` and
+`next-intl` only for the `/next` adapter.
 
 **Styles.** In `globals.css`, right after Tailwind and before the app's own `@theme`:
 
@@ -57,6 +58,7 @@ declared, so `hsl(var(--card))` declared on `:root` reads `:root`'s `--card`.
 | `--admin-row-hover` | a hovered row | `--color-muted` |
 | `--admin-row-selected` | a selected row | `--color-primary` at 8% |
 | `--admin-head-fg` | column heads | `--color-muted-foreground` |
+| `--admin-lead-fg` | a body row's first cell (an id column reads quieter; a name column sets the foreground) | `--color-muted-foreground` |
 | `--admin-fg-muted`, `--admin-fg-dim`, `--admin-fg-faint` | the eyebrow's `muted`/`dim`/`faint` tones; footer text (dim); the search icon and an idle chip's count (faint) | `--color-muted-foreground` |
 | `--admin-control-bg`, `--admin-control-border` | `Input` (and the `surface` select/combobox trigger), `Checkbox`; the border also rims an `outline` or `dashed` button, a select-like trigger and the floating panel | transparent (`--color-input` at 30% under `dark:`), `--color-input` |
 | `--admin-chip-bg` | an idle filter chip's count | `--color-accent` |
@@ -73,7 +75,8 @@ The framed table's shadow is `shadow-surface`, shared with `Card`: `--shadow-sur
 app's `@theme` flattens both. The same roles exist as utilities (`bg-admin-surface`,
 `border-admin`, `text-admin-dim`, …) for an app's own surfaces to match.
 
-**Messages.** The kit's strings sit under `adminKit`; merge them into the app's next-intl messages:
+**Messages.** The kit's strings sit under `adminKit`; merge them into the app's next-intl messages,
+or, without next-intl, give them to use-intl's `<IntlProvider locale messages>`:
 
 ```ts
 import { en, ru } from "@craazzzyyfoxx/admin-kit/messages";
@@ -81,16 +84,34 @@ import { en, ru } from "@craazzzyyfoxx/admin-kit/messages";
 const messages = { ...appMessages[locale], ...{ en, ru }[locale] };
 ```
 
-**Provider.** Optional: without it a failed request shows the `Error`'s message.
+**Provider.** Optional: without it a failed request shows the `Error`'s message, and the kit runs
+on `browserAdapter`: the History API (a change is announced as `popstate`), a plain `<a>` and
+use-intl's `useTranslations`. A Next app passes Next's router and next-intl:
 
 ```tsx
 import { AdminKitProvider } from "@craazzzyyfoxx/admin-kit/provider";
+import { nextAdapter } from "@craazzzyyfoxx/admin-kit/next";
 
-<AdminKitProvider describeError={(error) => ({ message, status, requestId })}>{children}</AdminKitProvider>
+<AdminKitProvider adapter={nextAdapter} describeError={(error) => ({ message, status, requestId })}>
+  {children}
+</AdminKitProvider>
 ```
 
-**Vitest.** Inline the package (`test.server.deps.inline: ["@craazzzyyfoxx/admin-kit"]`): its ESM
-imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
+Another router supplies its own `AdminKitAdapter` (`usePathname`, `useSearchParams`, `useRouter`,
+`Link`, `useTranslations`): a module constant, because the kit calls its hooks as hooks.
+
+**Vitest.** In a Next app inline the package (`test.server.deps.inline: ["@craazzzyyfoxx/admin-kit"]`):
+`/next` imports `next/navigation` and `next/link`, which Node cannot resolve on its own. Suites that
+render the kit bare and mock `next/navigation` or `next-intl` make `nextAdapter` the default in
+their setup file:
+
+```ts
+vi.mock("@craazzzyyfoxx/admin-kit/provider", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@craazzzyyfoxx/admin-kit/provider")>();
+  const { nextAdapter } = await import("@craazzzyyfoxx/admin-kit/next");
+  return { ...actual, useAdapter: () => nextAdapter };
+});
+```
 
 ## Imports
 
@@ -99,7 +120,8 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
 | `@craazzzyyfoxx/admin-kit/data-table` | `DataTable`, `columnMeta`, `createKebabColumn`, filters, types (and `/data-table/<file>` for the rest) |
 | `@craazzzyyfoxx/admin-kit/kit/<name>` | `ConfirmDialog`, `EntityFormDialog`, `EmptyNote` (`LoadErrorNote`), `ErrorDetails`, `Clipboard`, `FilterBar`, `useFilters`, `ServerSearchCombobox`, `useSearchComboboxQuery`, `useUnsavedGuard`, `SaveBar` (`guardNavigation`, `onDirtyChange`) |
 | `@craazzzyyfoxx/admin-kit/ui/<name>` | The primitives the kit is built from, on shadcn's API (`button`, `select`, `dialog`, `popover`, `tooltip`, `table`, …) plus `data-pagination` and `infinite-scroll`. An app imports these instead of keeping its own copies, and themes them through `--admin-*`. `button` also has the `accent`, `positive`, `dashed` and `ghost-destructive` variants and the `inline`, `label` and `icon-toolbar` sizes; a disabled button keeps its pointer events, so a tooltip can say why; `card` is a bare surface (its header, content and footer pad themselves; the title uses the app's `text-heading`), and it and its title take `asChild`; `table` a `wrapperClassName`; `popover` `animate` and `PopoverClose`; `select`/`combobox` a `variant` (`surface`); `input` a `size` and `controlSurfaceClass`; `dialog` a `panel` variant plus `MODAL_SURFACE_CLASS`, `PANEL_CONTENT_CLASS` and `ModalCloseButton` for a sheet; `skeleton` a `text` variant; `spinner` a `label` that announces it (decorative without one); `tooltip` `TOOLTIP_DELAY`. |
-| `@craazzzyyfoxx/admin-kit/provider` | `AdminKitProvider`, `useDescribeError` |
+| `@craazzzyyfoxx/admin-kit/provider` | `AdminKitProvider`, `useDescribeError`, `useAdapter`, `browserAdapter`, `AdminKitAdapter` |
+| `@craazzzyyfoxx/admin-kit/next` | `nextAdapter` |
 | `@craazzzyyfoxx/admin-kit/messages` | `en`, `ru` |
 | `@craazzzyyfoxx/admin-kit/styles.css` | See Setup |
 
@@ -108,10 +130,14 @@ imports `next/navigation` and `next/link`, which Node cannot resolve on its own.
 - **Two data modes.** Server (`queryKey`/`queryFn`, one page per request) or client (`rows`,
   everything in memory: search, sort, filters and paging run locally).
 - **URL is the state.** Page, search, page size, sort and column filters are mirrored into the
-  query string and restored from it; back/forward works.
+  query string and restored from it; back/forward works. `urlState="docs"` puts them under
+  `docs.page`, `docs.sort`, … so two tables on one screen keep apart; `urlState={false}` keeps
+  them in the component (and drops saved views, which are URLs).
 - **Rows per page.** In the View menu: "Auto · N" (a `pages` table without `initialPageSize` fits
   its page to the viewport) and `pageSizeOptions` (default 10, 25, 50, 100). The pick is
   remembered per screen in localStorage; a link's `?per_page=` wins over it.
+- **One section of a page.** `fillViewport={false}`: the table is as tall as its rows instead of
+  taking the viewport's height, and offers no "Auto" page size.
 - **Paging.** Seven fixed page slots (the arrows never move), a "…" that opens a jump-to-page
   field, `‹ Page [n] of N ›` on phones. `[` / `]` page, Shift+`[` / `]` go to the ends (physical
   keys); the reader turns them off in the View menu, a screen turns them off with

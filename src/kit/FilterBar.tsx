@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { ChevronLeft, ListFilter, Plus, X } from "lucide-react";
 import { useDebounce } from "use-debounce";
 

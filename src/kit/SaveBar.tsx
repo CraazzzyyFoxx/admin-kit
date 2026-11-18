@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { AlertTriangle } from "lucide-react";
 
+import { useAdapter } from "../provider.js";
 import { ConfirmDialog } from "./ConfirmDialog.js";
 import { useUnsavedGuard } from "./useUnsavedGuard.js";
 import { Button } from "../ui/button.js";
@@ -73,7 +73,7 @@ export function SaveBar({
   onDirtyChange
 }: Readonly<SaveBarProps>) {
   const t = useTranslations("adminKit.saveBar");
-  const router = useRouter();
+  const router = useAdapter().useRouter();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
 
   const handleNavigationBlocked = useCallback((href: string) => setPendingHref(href), []);

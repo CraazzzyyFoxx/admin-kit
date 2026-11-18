@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { flexRender, type Column, type Row } from "@tanstack/react-table";
 
 import { cn } from "../lib/utils.js";

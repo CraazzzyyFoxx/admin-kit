@@ -2,9 +2,9 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, type LucideIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { useTranslations } from "../lib/intl.js";
 
+import { useAdapter } from "../provider.js";
 import { Button } from "../ui/button.js";
 import {
   DropdownMenu,
@@ -40,6 +40,7 @@ function KebabCell({
   rowId
 }: Readonly<{ actions: KebabAction[]; label?: string; rowId: string }>) {
   const t = useTranslations("adminKit.dataTable");
+  const { Link } = useAdapter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight, CornerDownLeft, MoreHorizontal } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
 import { Button } from "./button.js";
 import { IconTooltip } from "./icon-tooltip.js";

@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { useAdapter } from "../provider.js";
 
 export type QueryParamValue = string | number | boolean | null | undefined;
 
@@ -42,6 +43,7 @@ export function useQueryParams({
   resetOnChange = ["page"],
   shallow = false
 }: UseQueryParamsOptions = {}) {
+  const { useRouter, usePathname, useSearchParams } = useAdapter();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

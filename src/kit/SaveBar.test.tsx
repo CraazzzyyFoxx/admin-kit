@@ -5,8 +5,6 @@ import { describe, expect, it, vi } from "vitest";
 
 import { SaveBar } from "./SaveBar.js";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
-
 const bar = (props: Partial<React.ComponentProps<typeof SaveBar>> = {}) => (
   <SaveBar dirty summary="3 changes" onDiscard={() => {}} onSave={() => {}} {...props} />
 );

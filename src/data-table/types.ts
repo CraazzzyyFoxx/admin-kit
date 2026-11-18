@@ -198,6 +198,13 @@ export interface DataTableProps<TData> {
    * localStorage key. Only columns declaring `meta.category` are offered.
    */
   columnsStorageKey?: string;
+  /**
+   * Where page, search, page size, sort and column filters live. `true` (default): the query
+   * string, under `page`, `search`, `per_page`, `sort`, `dir` and each filter's param. A string:
+   * the query string under `<prefix>.page` and so on, so two tables on one screen keep apart.
+   * `false`: only in the component, and the "View" menu offers no saved views (they are URLs).
+   */
+  urlState?: boolean | string;
 
   onRowClick?: (row: Row<TData>) => void;
   onRowDoubleClick?: (row: Row<TData>) => void;
@@ -253,4 +260,10 @@ export interface DataTableProps<TData> {
    * is not a card inside a card.
    */
   framed?: boolean;
+  /**
+   * `false` for a table that is one section of a page, not the page's list: it is as tall as its
+   * rows, with no "Auto" page size (an unset `initialPageSize` means the default) and no filling
+   * of the viewport under `paging="all"` or `"infinite"`.
+   */
+  fillViewport?: boolean;
 }

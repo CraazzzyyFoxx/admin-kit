@@ -48,3 +48,21 @@ export function writeSorting(params: URLSearchParams, sorting: SortingState) {
 export function serializeSorting(sorting: SortingState) {
   return sorting.map((entry) => `${entry.id}:${entry.desc ? "desc" : "asc"}`).join(",");
 }
+
+/** The table's own params out of the whole query string: those under `<prefix>.`, unprefixed. */
+export function readScope(all: URLSearchParams, prefix: string): URLSearchParams {
+  if (!prefix) return new URLSearchParams(all);
+  const scoped = new URLSearchParams();
+  for (const [key, value] of all)
+    if (key.startsWith(`${prefix}.`)) scoped.append(key.slice(prefix.length + 1), value);
+  return scoped;
+}
+
+/** `all` with the table's params replaced by `scoped`; the rest of the query is kept. */
+export function writeScope(all: URLSearchParams, scoped: URLSearchParams, prefix: string) {
+  if (!prefix) return scoped;
+  const next = new URLSearchParams();
+  for (const [key, value] of all) if (!key.startsWith(`${prefix}.`)) next.append(key, value);
+  for (const [key, value] of scoped) next.append(`${prefix}.${key}`, value);
+  return next;
+}

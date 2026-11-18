@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Check, Copy, Eye, EyeOff } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { toast } from "sonner";
 
 import { Button } from "../ui/button.js";

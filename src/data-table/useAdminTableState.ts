@@ -16,12 +16,16 @@ import {
   parsePositiveInt,
   parseSorting,
   serializeSorting,
-  writeSorting
+  writeSorting,
+  readScope,
+  writeScope
 } from "./url-state.js";
 
 export interface AdminTableStateOptions<TData> {
   columns: ColumnDef<TData>[];
   pathname: string;
+  /** See `DataTableProps.urlState`. */
+  urlState: boolean | string;
   /** `null`: no size until the reader picks one — the table fits its page to the viewport ("Auto"), and `?per_page=` is only written for a pick. */
   initialPageSize: number | null;
   initialSort?: { field: string; dir: SortDir };
@@ -52,6 +56,7 @@ function readStoredPageSize(key: string | undefined): number | undefined {
 export function useAdminTableState<TData>({
   columns,
   pathname,
+  urlState,
   initialPageSize,
   initialSort,
   filterKey,
@@ -59,6 +64,8 @@ export function useAdminTableState<TData>({
   onFiltersChange,
   pageSizeStorageKey
 }: AdminTableStateOptions<TData>) {
+  const inUrl = urlState !== false;
+  const prefix = typeof urlState === "string" ? urlState : "";
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 300);
   const [currentPage, setCurrentPage] = useState(1);
@@ -162,7 +169,9 @@ export function useAdminTableState<TData>({
   // Browser back/forward sync
   useEffect(() => {
     const syncStateFromUrl = () => {
-      const params = new URLSearchParams(window.location.search);
+      const params = inUrl
+        ? readScope(new URLSearchParams(window.location.search), prefix)
+        : new URLSearchParams();
       const nextPage = parsePositiveInt(params.get("page"), 1);
       const nextSearch = params.get("search") ?? "";
       const nextPageSize = parsePositiveInt(
@@ -198,12 +207,14 @@ export function useAdminTableState<TData>({
     };
 
     syncStateFromUrl();
+    if (!inUrl) return;
     window.addEventListener("popstate", syncStateFromUrl);
     return () => window.removeEventListener("popstate", syncStateFromUrl);
-  }, [initialPageSize, pageSizeStorageKey]);
+  }, [initialPageSize, pageSizeStorageKey, inUrl, prefix]);
 
   // URL sync
   useEffect(() => {
+    if (!inUrl) return;
     if (pendingUrlFiltersRef.current !== null) {
       if (pendingUrlFiltersRef.current !== serializedFilters) return;
       pendingUrlFiltersRef.current = null;
@@ -211,7 +222,8 @@ export function useAdminTableState<TData>({
     const replaceHistory = replaceHistoryRef.current;
     replaceHistoryRef.current = false;
 
-    const params = new URLSearchParams(window.location.search);
+    const all = new URLSearchParams(window.location.search);
+    const params = readScope(all, prefix);
     const prev = previousUrlStateRef.current;
     const searchChanged = prev.search !== debouncedSearchValue;
     const pageChanged = prev.page !== safeCurrentPage;
@@ -254,7 +266,7 @@ export function useAdminTableState<TData>({
     writeSorting(params, sorting);
     writeFiltersToParams(filterSpecsRef.current, filters, params);
 
-    const query = params.toString();
+    const query = writeScope(all, params, prefix).toString();
     const nextUrl = query ? `${pathname}?${query}` : pathname;
 
     if (replaceHistory || searchChanged || pageSizeChanged || sortChanged || filtersChanged) {
@@ -271,6 +283,8 @@ export function useAdminTableState<TData>({
       filters: serializedFilters
     };
   }, [
+    inUrl,
+    prefix,
     safeCurrentPage,
     debouncedSearchValue,
     initialPageSize,

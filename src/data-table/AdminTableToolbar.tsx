@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useId, useState, useSyncExternalStore } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import {
   ArrowDown,
   ArrowUp,
@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import type { ColumnSort } from "@tanstack/react-table";
 
-import Link from "next/link";
+import { useAdapter } from "../provider.js";
 import { cn } from "../lib/utils.js";
 import { Button } from "../ui/button.js";
 import {
@@ -78,6 +78,8 @@ export interface AdminTableViewProps {
     onChange: (value: string) => void;
   };
   prefsKey: string;
+  /** False where the table keeps its state out of the URL: a saved view is a URL. Default true. */
+  savedViews?: boolean;
   visibility: Record<string, boolean>;
   onVisibilityChange: (next: Record<string, boolean>) => void;
   /** Absent when the screen gave no `columnsStorageKey`, or its own cards replace the columns. */
@@ -236,6 +238,7 @@ function CommandGlyph({ command }: Readonly<{ command: TableCommand }>) {
  */
 function CommandButton({ command, narrow }: Readonly<{ command: TableCommand; narrow: boolean }>) {
   const reasonId = useId();
+  const { Link } = useAdapter();
   const iconOnly = narrow && command.icon !== undefined;
   const disabled = command.disabled === true || command.disabledReason !== undefined;
   const props = {
@@ -282,6 +285,7 @@ function CommandButton({ command, narrow }: Readonly<{ command: TableCommand; na
 /** A secondary command folded into the narrow "View" menu; a reason reads under its label. */
 function CommandMenuItem({ command }: Readonly<{ command: TableCommand }>) {
   const disabled = command.disabled === true || command.disabledReason !== undefined;
+  const { Link } = useAdapter();
   const content = (
     <>
       <CommandGlyph command={command} />
@@ -327,6 +331,7 @@ function ViewMenu({
   onTogglePageHotkeys,
   pageSize,
   prefsKey,
+  savedViews: offerViews = true,
   visibility,
   onVisibilityChange,
   pickerColumns,
@@ -457,11 +462,13 @@ function ViewMenu({
                   <ChevronRight aria-hidden />
                 </DropdownMenuItem>
               ) : null}
-              <DropdownMenuItem onSelect={enter("views")}>
-                <Bookmark aria-hidden />
-                {t("views")}
-                <ChevronRight aria-hidden className="ml-auto" />
-              </DropdownMenuItem>
+              {offerViews ? (
+                <DropdownMenuItem onSelect={enter("views")}>
+                  <Bookmark aria-hidden />
+                  {t("views")}
+                  <ChevronRight aria-hidden className="ml-auto" />
+                </DropdownMenuItem>
+              ) : null}
               {pickerColumns ? (
                 <DropdownMenuItem onSelect={enter("columns")}>
                   <Settings2 aria-hidden />

@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import { flexRender, type Row } from "@tanstack/react-table";
 
 import { Card } from "../ui/card.js";
@@ -18,9 +18,8 @@ import { Skeleton } from "../ui/skeleton.js";
 import { InfiniteScrollFooter } from "../ui/infinite-scroll.js";
 import { DataPagination, DEFAULT_PAGE_HOTKEYS } from "../ui/data-pagination.js";
 import { toast } from "sonner";
-import { useDescribeError } from "../provider.js";
+import { useDescribeError, useAdapter } from "../provider.js";
 import { useIsMobile } from "../hooks/use-mobile.js";
-import { usePathname } from "next/navigation";
 import { fetchAllPages } from "./fetchAllPages.js";
 import {
   ADMIN_ACTION_COLUMN_ID,
@@ -133,7 +132,9 @@ export function DataTable<TData>({
   inspectorId,
   onPageRowsChange,
   renderMobileCard,
-  framed = true
+  framed = true,
+  urlState = true,
+  fillViewport = true
 }: Readonly<DataTableProps<TData>>) {
   const t = useTranslations("adminKit.dataTable");
   const tTable = useTranslations("adminKit.table");
@@ -144,8 +145,8 @@ export function DataTable<TData>({
   // batching UI over it.
   const showAll = isClientMode && paging === "all";
   // A screen that fixed no page size gets one fitted to the viewport ("Auto").
-  const fitsViewport = initialPageSize === undefined && !isInfinite && !showAll;
-  const pathname = usePathname();
+  const fitsViewport = fillViewport && initialPageSize === undefined && !isInfinite && !showAll;
+  const pathname = useAdapter().usePathname();
   const isMobile = useIsMobile();
   const searchInputId = useId();
   const rowHintId = useId();
@@ -174,6 +175,7 @@ export function DataTable<TData>({
   } = useAdminTableState({
     columns,
     pathname,
+    urlState,
     initialPageSize: fitsViewport ? null : initialPageSize ?? DEFAULT_PAGE_SIZE,
     initialSort,
     filterKey,
@@ -197,7 +199,7 @@ export function DataTable<TData>({
   const { scrollElement, scrollRef, tableRef, cardRef, fittedRows } = useTableScrollBox({
     // An unpaged table fills too: three matching rows must not leave the card, and the inspector
     // beside it, ending halfway down the screen.
-    fill: autoFit || ((showAll || isInfinite) && !isMobile),
+    fill: autoFit || (fillViewport && (showAll || isInfinite) && !isMobile),
     fit: autoFit,
     rowEstimate: ROW_HEIGHT_ESTIMATE[density],
     onRefit: refitPage
@@ -611,6 +613,7 @@ export function DataTable<TData>({
               }
             : undefined,
           prefsKey,
+          savedViews: urlState !== false,
           visibility,
           onVisibilityChange: setVisibility,
           // A phone's cards are built from the first visible columns, so the picker stays there only

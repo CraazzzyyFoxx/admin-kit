@@ -9,8 +9,6 @@ import { renderWithProviders } from "../../test/render.js";
 import { DataTable } from "./DataTable.js";
 import type { DataTableGroup } from "./types.js";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/groups" }));
-
 interface Row {
   id: number;
   name: string;

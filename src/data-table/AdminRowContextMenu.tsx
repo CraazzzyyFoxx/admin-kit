@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 import type { Row, Table } from "@tanstack/react-table";
 import { Copy, Rows3 } from "lucide-react";
 
@@ -12,7 +12,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger
 } from "../ui/context-menu.js";
-import Link from "next/link";
+import { useAdapter } from "../provider.js";
 import { ADMIN_ACTION_COLUMN_ID } from "./columns.js";
 import type { KebabAction } from "./kebab-column.js";
 
@@ -83,6 +83,7 @@ function RowMenuItems<TData>({
   rowActions
 }: Readonly<{ row: Row<TData>; cellText: string; rowActions?: (row: TData) => KebabAction[] }>) {
   const t = useTranslations("adminKit.table");
+  const { Link } = useAdapter();
   const actions = rowActions?.(row.original).filter((action) => !action.hidden) ?? [];
   return (
     <>

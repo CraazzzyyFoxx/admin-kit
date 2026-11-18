@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "../lib/intl.js";
 
+import { useAdapter } from "../provider.js";
 import { ConfirmDialog } from "./ConfirmDialog.js";
 import {
   Dialog,
@@ -81,7 +81,7 @@ export function EntityFormDialog({
   const submitText = submitLabel ?? tc("save");
   const submittingText = submittingLabel ?? tc("saving");
   const cancelText = cancelLabel ?? (isReadOnly ? tc("close") : tc("cancel"));
-  const router = useRouter();
+  const router = useAdapter().useRouter();
   const [discardDialogOpen, setDiscardDialogOpen] = useState(false);
   const [pendingNavigationHref, setPendingNavigationHref] = useState<string | null>(null);
 
