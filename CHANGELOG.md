@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+- `DataTable` with `paging="all"` or `"infinite"` fills the viewport on desktop like an Auto-paged
+  one: a search down to a few rows no longer leaves the card, and an inspector stretched beside it,
+  ending halfway down the screen. Row fitting stays Auto-only (`useTableScrollBox` takes `fit`
+  apart from `fill`).
+
 ## 0.6.0
 
 Breaking: the primitives keep the geometry and behaviour of the app they were extracted from, and

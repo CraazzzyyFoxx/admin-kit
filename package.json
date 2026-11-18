@@ -1,6 +1,6 @@
 {
   "name": "@craazzzyyfoxx/admin-kit",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Admin list table, pagination and form kit for Next.js apps on shadcn/ui and Tailwind 4",
   "license": "MIT",
   "type": "module",

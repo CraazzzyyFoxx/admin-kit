@@ -195,7 +195,10 @@ export function DataTable<TData>({
   // Only the desktop table is fitted: a phone's card list has no box to fill.
   const autoFit = chosenPageSize === null && !isMobile;
   const { scrollElement, scrollRef, tableRef, cardRef, fittedRows } = useTableScrollBox({
-    fill: autoFit,
+    // An unpaged table fills too: three matching rows must not leave the card, and the inspector
+    // beside it, ending halfway down the screen.
+    fill: autoFit || ((showAll || isInfinite) && !isMobile),
+    fit: autoFit,
     rowEstimate: ROW_HEIGHT_ESTIMATE[density],
     onRefit: refitPage
   });

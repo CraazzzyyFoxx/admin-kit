@@ -10,10 +10,12 @@ const REFIT_DELAY_MS = 150;
 
 export interface TableScrollBoxOptions {
   /**
-   * The page is fitted to the viewport ("Auto"): the box takes all the height
-   * left, not only up to it, and `fittedRows` says how many rows that holds.
+   * The box takes all the height left in the viewport, not only up to it: the
+   * card ends at the viewport's bottom however few rows it holds.
    */
   fill: boolean;
+  /** The page is fitted to the viewport ("Auto"): `fittedRows` says how many rows the filled box holds. */
+  fit: boolean;
   /** Row height to fit by while no body row is rendered (loading, empty). */
   rowEstimate: number;
   /** The fitted row count changed from one measured value to another; called in the same batch as the new count. */
@@ -29,7 +31,7 @@ export interface TableScrollBoxOptions {
  * different screens' headers and tabs, none of which would otherwise have to
  * know about it.
  */
-export function useTableScrollBox({ fill, rowEstimate, onRefit }: TableScrollBoxOptions) {
+export function useTableScrollBox({ fill, fit: fitRows, rowEstimate, onRefit }: TableScrollBoxOptions) {
   // The element is held twice on purpose: the state re-renders the table once
   // the box exists (the virtualiser needs it), while the box is only ever
   // measured and capped through the ref — state values are not for mutating.
@@ -96,7 +98,7 @@ export function useTableScrollBox({ fill, rowEstimate, onRefit }: TableScrollBox
       scrollBox.style.height = fill ? height : "";
       scrollBox.scrollTop = scrollTop;
       scrollBox.scrollLeft = scrollLeft;
-      if (!fill) return;
+      if (!fitRows) return;
 
       // The shortest body row is the one-line height; taller rows wrap, and a
       // page of them scrolls inside the box like any overflow.
@@ -151,7 +153,7 @@ export function useTableScrollBox({ fill, rowEstimate, onRefit }: TableScrollBox
       if (frame) cancelAnimationFrame(frame);
       window.clearTimeout(timer);
     };
-  }, [scrollElement, fill, rowEstimate]);
+  }, [scrollElement, fill, fitRows, rowEstimate]);
 
   return { scrollElement, scrollRef, tableRef, cardRef, fittedRows };
 }
